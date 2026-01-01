@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: "Carleight Blog"
-  text: "Carleight 的 Blog 合集，不仅仅只有设计，任何事都可以被我记录！"
+  text: "Carleight的博客，分享各种可能性"
   tagline: My great project tagline
   actions:
     - theme: brand

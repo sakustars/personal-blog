@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Carleight Blog",
-  description: "Carleight 的 Blog 合集，不仅仅只有设计，任何事都可以被我记录！",
+  description: "Carleight的博客，分享各种可能性",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [

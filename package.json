@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "docs:dev": "vitepress dev Users/carleight/Downloads/Blog/config",
-    "docs:build": "vitepress build Users/carleight/Downloads/Blog/config",
-    "docs:preview": "vitepress preview Users/carleight/Downloads/Blog/config"
+    "docs:dev": "vitepress dev",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview"
   },
   "devDependencies": {
     "vitepress": "^1.6.4"
