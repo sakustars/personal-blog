@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "docs:dev": "vitepress dev Users/carleight/Downloads/Blog/config",
+    "docs:build": "vitepress build Users/carleight/Downloads/Blog/config",
+    "docs:preview": "vitepress preview Users/carleight/Downloads/Blog/config"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4"
+  }
+}
