@@ -1,0 +1,11 @@
+<svg width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prata');
+    .logo-text {
+      font-family: 'Prata', serif;
+      font-size: 38px;
+      fill: var(--vp-c-brand-1, #646cff);
+    }
+  </style>
+  <text x="10" y="38" class="logo-text">C</text>
+</svg>
