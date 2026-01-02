@@ -28,7 +28,6 @@ aside: false
           <div class="about-place">杭州</div>
         </div>
       </div>
-
       <div class="about-item">
         <div class="about-time">none</div>
         <div class="about-info">
@@ -36,7 +35,6 @@ aside: false
           <div class="about-place">city</div>
         </div>
       </div>
-
       <div class="about-item">
         <div class="about-time">none</div>
         <div class="about-info">
@@ -45,7 +43,6 @@ aside: false
           <div class="about-meta">degree</div>
         </div>
       </div>
-
       <div class="about-item">
         <div class="about-time">none</div>
         <div class="about-info">
