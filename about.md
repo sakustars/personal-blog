@@ -7,7 +7,7 @@ aside: false
 <div class="about-wrap">
   <header class="about-hero">
     <h1>Carleight</h1>
-    <p>充满热情的软件设计师 & PM。</p>
+    <p>充满热情的软件设计师 &amp; PM。</p>
     <p>白天是酷毙高三生，周末被无限压榨。</p>
     <p>不断学习，无限进步。</p>
     <div class="about-links">
