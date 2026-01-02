@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Icon } from 'linar'
+import { VPNavBarSearch } from 'vitepress/theme'
 import { computed, onBeforeUnmount, onMounted, reactive, watch } from 'vue'
 import type { SidebarGroupItem, SidebarItem, SidebarRole } from './sidebar.types'
 import { anyActive, filterByRole, isGroup, isLink, isActiveLink, normalizePath } from './sidebar.utils'
@@ -201,6 +202,10 @@ function resolvedHref(href: string) {
       <button v-else class="lp-close" type="button" @click="closeMobile">
         <span class="lp-close__icon"><Icon name="chevronRight" /></span>
       </button>
+    </div>
+
+    <div class="lp-sidebar__search">
+      <VPNavBarSearch />
     </div>
 
     <nav class="lp-nav" aria-label="Sidebar">

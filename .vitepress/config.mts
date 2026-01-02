@@ -13,7 +13,19 @@ export default defineConfig({
     ],
     outline: [2, 3],
     search: {
-      provider: 'local'
+      provider: 'local',
+      options: {
+        locales: {
+          'zh-CN': {
+            translations: {
+              button: {
+                buttonText: 'Guidance',
+                buttonAriaLabel: 'Search'
+              }
+            }
+          }
+        }
+      }
     }
   },
   markdown: {
@@ -23,4 +35,3 @@ export default defineConfig({
     }
   }
 })
-
