@@ -1,10 +1,22 @@
 {
+  "name": "personal-site",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "docs:dev": "vitepress dev",
-    "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview"
+    "dev": "vitepress dev . --host",
+    "build": "vitepress build .",
+    "preview": "vitepress preview . --host",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "linar": "file:./packages/linar"
   },
   "devDependencies": {
-    "vitepress": "^1.6.4"
+    "@vitejs/plugin-vue": "^5.2.4",
+    "@vue/test-utils": "^2.4.6",
+    "vitepress": "^1.5.0"
+    ,
+    "jsdom": "^26.0.0",
+    "vitest": "^2.1.9"
   }
 }

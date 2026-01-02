@@ -1,42 +1,23 @@
 ---
 layout: home
-
+title: 首页
 hero:
-  name: "Introducing the new MacBook Pro"
-  text: "Mind-blowing. Head-turning."
-  tagline: "PRESS RELEASE • January 2, 2026"
-  image:
-    src: /images/hero-macbook.svg
-    alt: MacBook Pro
+  name: 个人网站
+  text: 写作 · 笔记 · 作品
+  tagline: 用 Linear 风格做一个简洁、克制、可阅读的个人站点。
   actions:
     - theme: brand
-      text: Read full story
-      link: /blog/graphic-design-history
+      text: 查看博客
+      link: /blog/
     - theme: alt
-      text: View Press Kit
-      link: /blog/markdown-examples
-
+      text: 关于我
+      link: /about
 features:
-  - title: Apple Vision Pro arrives in new countries
-    details: "Customers in mainland China, Hong Kong, Japan, and Singapore can now order Apple Vision Pro."
-    icon:
-      src: /images/feature-vision.svg
-    link: /blog/api-examples
-  
-  - title: macOS Sequoia is now available
-    details: "The latest version of the world’s most advanced desktop operating system is available today as a free software update."
-    icon:
-      src: /images/feature-macos.svg
-  
-  - title: Apple reports fourth quarter results
-    details: "Apple today announced financial results for its fiscal 2025 fourth quarter ended September 28, 2025."
-  
-  - title: Final Cut Pro 11 now available
-    details: "New AI features, spatial video editing, and workflow improvements come to the Mac."
-
-  - title: Apple Intelligence available today
-    details: "The personal intelligence system that combines the power of generative models with personal context."
-
-  - title: Logic Pro for iPad 2
-    details: "Introducing the all-new Logic Pro for iPad 2 and Logic Pro for Mac 11."
+  - title: 轻量
+    details: 纯静态站点，构建快、部署简单。
+  - title: 结构清晰
+    details: 首页、博客列表、文章页保持一致的节奏与留白。
+  - title: 可扩展
+    details: 后续可以加标签页、作品集、RSS、搜索等功能。
 ---
+
