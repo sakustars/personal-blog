@@ -281,6 +281,18 @@ body {
   color: var(--vp-c-text-2);
 }
 
+.dark .VPDocAsideOutline .outline-title {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.dark .VPDocAsideOutline .outline-link::before {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.dark .VPDocAsideOutline .outline-link.active::before {
+  background: rgba(255, 255, 255, 0.6);
+}
+
 .about-page {
   --about-text: #1f1f1f;
   --about-muted: #6f6f6f;
@@ -346,7 +358,7 @@ body {
 }
 
 .about-page .about-links a::after {
-  content: '\\2197';
+  content: '\2197';
   font-size: 12px;
   margin-left: 4px;
 }
@@ -934,6 +946,63 @@ body {
 .lp-aside-switch__text {
   font-weight: 600;
   letter-spacing: -0.01em;
+}
+
+.lp-post-nav {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--lp-border);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.lp-post-nav__item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: var(--lp-radius-md);
+  border: 1px solid var(--lp-border);
+  background: linear-gradient(180deg, var(--vp-c-bg-elv) 0%, var(--vp-c-bg-soft) 100%);
+  color: var(--vp-c-text-1);
+  text-decoration: none !important;
+  transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.lp-post-nav__item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(109, 40, 217, 0.3);
+  background: linear-gradient(180deg, rgba(109, 40, 217, 0.08) 0%, var(--vp-c-bg-soft) 100%);
+}
+
+.dark .lp-post-nav__item:hover {
+  border-color: rgba(139, 92, 246, 0.32);
+  background: linear-gradient(180deg, rgba(139, 92, 246, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+}
+
+.lp-post-nav__item--next {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.lp-post-nav__label {
+  font-size: 12px;
+  color: var(--vp-c-text-3);
+  letter-spacing: 0.02em;
+}
+
+.lp-post-nav__arrow {
+  color: var(--vp-c-text-3);
+}
+
+.lp-post-nav__title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .lp-float {
