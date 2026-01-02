@@ -177,6 +177,248 @@ body {
   background: rgba(0, 0, 0, 0.2);
 }
 
+.VPDocAsideOutline {
+  display: none;
+}
+
+.VPDocAsideOutline.has-outline {
+  display: block;
+  position: sticky;
+  top: 64px;
+  height: calc(100svh - 112px);
+  overflow-y: auto;
+  width: 12rem;
+  margin-left: 32px;
+}
+
+@media (min-width: 1280px) {
+  .VPDocAsideOutline.has-outline {
+    width: 16rem;
+    margin-left: 64px;
+  }
+}
+
+.VPDocAsideOutline .content {
+  position: relative;
+  border-left: 0;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.VPDocAsideOutline .outline-marker {
+  display: none;
+}
+
+.VPDocAsideOutline .outline-title {
+  line-height: 1.4;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--vp-c-text-3);
+  letter-spacing: 0.02em;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.VPDocAsideOutline:hover .outline-title {
+  opacity: 1;
+}
+
+.VPDocOutlineItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.VPDocOutlineItem.nested {
+  padding-left: 12px;
+  gap: 6px;
+}
+
+.VPDocOutlineItem li {
+  margin: 0;
+}
+
+.VPDocAsideOutline .outline-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.4;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--vp-c-text-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transition: color 160ms ease, opacity 160ms ease;
+}
+
+.VPDocAsideOutline .outline-link::before {
+  content: '';
+  width: 12px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--vp-c-border);
+  transition: background 160ms ease, width 160ms ease;
+}
+
+.VPDocAsideOutline .outline-link.active {
+  color: var(--vp-c-text-1);
+  opacity: 1;
+}
+
+.VPDocAsideOutline .outline-link.active::before {
+  background: var(--vp-c-text-2);
+  width: 16px;
+}
+
+.VPDocAsideOutline:hover .outline-link {
+  opacity: 1;
+}
+
+.about-page {
+  --about-text: #1f1f1f;
+  --about-muted: #6f6f6f;
+  --about-link: #7a7a7a;
+  --about-link-hover: #2f2f2f;
+  --about-bg: #ffffff;
+  --about-font: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', 'STSong', 'SimSun', serif;
+  background: var(--about-bg);
+}
+
+.dark .about-page {
+  --about-text: rgba(255, 255, 255, 0.92);
+  --about-muted: rgba(255, 255, 255, 0.6);
+  --about-link: rgba(255, 255, 255, 0.68);
+  --about-link-hover: rgba(255, 255, 255, 0.92);
+  --about-bg: #0d1017;
+}
+
+.about-page .VPDoc {
+  padding-top: 56px;
+}
+
+.about-page .VPDoc .content-container {
+  max-width: 720px;
+  margin-left: 0;
+}
+
+.about-page .vp-doc {
+  font-family: var(--about-font);
+  color: var(--about-text);
+}
+
+.about-page .vp-doc h1 {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin: 0 0 12px;
+}
+
+.about-page .header-anchor {
+  display: none;
+}
+
+.about-page .about-hero p {
+  margin: 0 0 6px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--about-text);
+}
+
+.about-page .about-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.about-page .about-links a {
+  color: var(--about-link);
+  text-decoration: none;
+  font-size: 15px;
+  letter-spacing: 0.01em;
+}
+
+.about-page .about-links a::after {
+  content: '\\2197';
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+.about-page .about-links a:hover {
+  color: var(--about-link-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.about-page .about-section {
+  margin-top: 34px;
+}
+
+.about-page .about-section h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 18px;
+  letter-spacing: -0.01em;
+}
+
+.about-page .about-timeline {
+  display: grid;
+  gap: 22px;
+}
+
+.about-page .about-item {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 22px;
+}
+
+.about-page .about-time {
+  color: var(--about-muted);
+  font-size: 15px;
+}
+
+.about-page .about-role {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--about-text);
+}
+
+.about-page .about-place {
+  margin-top: 4px;
+  color: var(--about-muted);
+  font-size: 14px;
+}
+
+.about-page .about-meta {
+  margin-top: 8px;
+  color: var(--about-muted);
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .about-page .VPDoc {
+    padding-top: 40px;
+  }
+
+  .about-page .vp-doc h1 {
+    font-size: 34px;
+  }
+
+  .about-page .about-item {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
+
 .lp-posts {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
