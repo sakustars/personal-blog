@@ -602,17 +602,28 @@ body {
   padding: 0 8px 0 0;
 }
 
-.lp-sidebar__search .DocSearch-Button-Keys {
+.lp-sidebar__search .DocSearch-Button .DocSearch-Button-Keys {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
-.lp-sidebar__search .DocSearch-Button-Key {
+.lp-sidebar__search .DocSearch-Button .DocSearch-Button-Key {
   border: 1px solid var(--lp-border);
   background: var(--vp-c-bg-elv);
   color: var(--vp-c-text-2);
   box-shadow: none;
+  border-radius: 6px;
+  padding: 0 6px;
+  margin: 0;
+}
+
+.lp-sidebar__search .DocSearch-Button .DocSearch-Button-Key + .DocSearch-Button-Key {
+  border-left: 1px solid var(--lp-border);
+  border-right: 1px solid var(--lp-border);
+  border-radius: 6px;
+  padding-left: 6px;
+  padding-right: 6px;
 }
 
 .lp-sidebar.is-collapsed .lp-sidebar__search {
