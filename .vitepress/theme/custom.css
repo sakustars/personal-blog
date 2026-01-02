@@ -109,12 +109,60 @@ body {
   background: rgba(255, 255, 255, 0.04);
 }
 
+.VPHome {
+  position: relative;
+  overflow: hidden;
+}
+
+.VPHome::before,
+.VPHome::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.VPHome::before {
+  top: -140px;
+  right: -160px;
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle at 30% 30%, rgba(109, 40, 217, 0.18), transparent 68%);
+  filter: blur(12px);
+}
+
+.VPHome::after {
+  bottom: -180px;
+  left: -140px;
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle at 70% 50%, rgba(22, 163, 74, 0.16), transparent 70%);
+  filter: blur(18px);
+}
+
+.VPHome > * {
+  position: relative;
+  z-index: 1;
+}
+
 .VPHome .container {
-  padding-top: 40px;
+  padding-top: 44px;
 }
 
 .VPHome .VPHomeHero {
-  padding: 34px 0 10px;
+  position: relative;
+  padding: 44px 0 18px;
+}
+
+@media (min-width: 960px) {
+  .VPHome .VPHomeHero {
+    padding: 64px 0 32px;
+  }
+}
+
+.VPHome .VPHomeHero .container {
+  gap: 28px;
+  align-items: flex-start;
 }
 
 .VPHome .VPHomeHero .text {
@@ -122,21 +170,43 @@ body {
 }
 
 .VPHome .VPHomeHero .tagline {
-  max-width: 46rem;
+  max-width: 40rem;
 }
 
 .VPHome .VPHomeFeatures {
-  padding-top: 16px;
+  padding-top: 24px;
 }
 
 .VPHome .VPHomeFeatures .items {
-  gap: 14px;
+  margin: -10px;
 }
 
 .VPHome .VPHomeFeatures .item {
-  border: 1px solid var(--lp-border);
-  border-radius: var(--lp-radius-md);
+  padding: 10px;
+  display: flex;
+}
+
+.VPHome .VPHomeHero .actions {
+  margin: 0;
+  padding-top: 20px;
+  gap: 12px;
+}
+
+.VPHome .VPHomeHero .action {
+  padding: 0;
+}
+
+.VPHome .VPFeature {
+  border-color: var(--lp-border);
   background: linear-gradient(180deg, var(--lp-surface-2) 0%, var(--lp-surface) 100%);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.VPHome .VPFeature.link:hover {
+  border-color: var(--lp-border-2);
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.12);
+  transform: translateY(-3px);
 }
 
 .VPDoc .content-container {

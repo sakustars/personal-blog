@@ -5,6 +5,7 @@ export default defineConfig({
   title: '个人网站',
   description: '博客与作品集',
   cleanUrls: true,
+  appearance: true,
   themeConfig: {
     nav: [
       { text: '首页', link: '/' },
