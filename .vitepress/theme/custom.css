@@ -237,7 +237,7 @@ body {
 }
 
 .VPDocOutlineItem.nested {
-  padding-left: 12px;
+  padding-left: 16px;
   gap: 6px;
 }
 
@@ -252,12 +252,11 @@ body {
   line-height: 1.4;
   font-size: 14px;
   font-weight: 400;
-  color: var(--vp-c-text-2);
+  color: transparent;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  opacity: 0;
-  transition: color 160ms ease, opacity 160ms ease;
+  transition: color 160ms ease;
 }
 
 .VPDocAsideOutline .outline-link::before {
@@ -271,7 +270,6 @@ body {
 
 .VPDocAsideOutline .outline-link.active {
   color: var(--vp-c-text-1);
-  opacity: 1;
 }
 
 .VPDocAsideOutline .outline-link.active::before {
@@ -280,7 +278,7 @@ body {
 }
 
 .VPDocAsideOutline:hover .outline-link {
-  opacity: 1;
+  color: var(--vp-c-text-2);
 }
 
 .about-page {
