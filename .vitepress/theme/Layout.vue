@@ -212,30 +212,25 @@ onBeforeUnmount(() => {
             </div>
           </div>
         </template>
+        <template #doc-after>
+          <div v-if="isBlogPost && (prevPost || nextPost)" class="lp-post-nav">
+            <a v-if="prevPost" class="lp-post-nav__item lp-post-nav__item--prev" :href="withBase(prevPost.url)">
+              <span class="lp-post-nav__label">
+                <span class="lp-post-nav__arrow" aria-hidden="true">←</span>
+                上一篇
+              </span>
+              <span class="lp-post-nav__title">{{ prevPost.title }}</span>
+            </a>
+            <a v-if="nextPost" class="lp-post-nav__item lp-post-nav__item--next" :href="withBase(nextPost.url)">
+              <span class="lp-post-nav__label">
+                下一篇
+                <span class="lp-post-nav__arrow" aria-hidden="true">→</span>
+              </span>
+              <span class="lp-post-nav__title">{{ nextPost.title }}</span>
+            </a>
+          </div>
+        </template>
       </DefaultLayout>
     </div>
-
-    <a
-      v-if="isBlogPost && prevPost"
-      class="lp-float lp-float--left"
-      :href="withBase(prevPost.url)"
-      aria-label="上一篇"
-    >
-      <span class="lp-float__inner">
-        <span class="lp-float__arrow">←</span>
-        <span class="lp-float__text">{{ prevPost.title }}</span>
-      </span>
-    </a>
-    <a
-      v-if="isBlogPost && nextPost"
-      class="lp-float lp-float--right"
-      :href="withBase(nextPost.url)"
-      aria-label="下一篇"
-    >
-      <span class="lp-float__inner">
-        <span class="lp-float__text">{{ nextPost.title }}</span>
-        <span class="lp-float__arrow">→</span>
-      </span>
-    </a>
   </div>
 </template>
