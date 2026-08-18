@@ -1,0 +1,10 @@
+---
+interface Props { type: "attention" | "memory" | "cells"; large?: boolean }
+const { type, large = false } = Astro.props;
+const label = { attention: "ATTENTIONAL SAMPLING", memory: "MEMORY REPLAY", cells: "GLIAL NETWORKS" }[type];
+---
+<div class:list={["cover", `cover-${type}`, { large }]} aria-label={label} role="img">
+  {type === "attention" ? <img src="/media/attention-archive.png" alt="Archival EEG trace and timing instrument" loading={large ? "eager" : "lazy"} /> : (
+    <><div class="cover-mark" aria-hidden="true"></div><span class="cover-label">{label}</span></>
+  )}
+</div>

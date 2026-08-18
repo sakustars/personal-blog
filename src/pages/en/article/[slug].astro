@@ -1,0 +1,13 @@
+---
+import { getCollection } from "astro:content";
+import SiteLayout from "../../../layouts/SiteLayout.astro";
+import ArticlePage from "../../../components/ArticlePage.astro";
+export async function getStaticPaths() {
+  const posts = (await getCollection("posts", ({ data }) => data.lang === "en" && !data.draft)).sort((a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf());
+  return posts.map(post => ({ params: { slug: post.data.translationKey }, props: { post, posts } }));
+}
+const { post, posts } = Astro.props;
+---
+<SiteLayout title={`${post.data.title} — CARLEIGHT`} description={post.data.description} lang="en" alternatePath={`/article/${post.data.translationKey}`}>
+  <ArticlePage lang="en" {post} {posts} />
+</SiteLayout>

@@ -1,0 +1,11 @@
+---
+interface Props { lang: "zh" | "en" }
+const { lang } = Astro.props;
+---
+<footer class="site-footer" id="about">
+  <div class="footer-grid">
+    <div class="footer-wordmark">CARLEIGHT</div>
+    <p>{lang === "zh" ? "关于科学、技术、阅读与日常生活的个人写作。" : "Personal writing on science, technology, reading, and everyday life."}</p>
+  </div>
+  <div class="footer-bottom"><span>© 2026 CARLEIGHT</span><span>{lang === "zh" ? "新加坡" : "Singapore"}</span></div>
+</footer>

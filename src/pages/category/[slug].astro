@@ -1,0 +1,16 @@
+---
+import { getCollection } from "astro:content";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import CategoryPage from "../../components/CategoryPage.astro";
+import { categories } from "../../data/categories";
+
+export async function getStaticPaths() {
+  const allPosts = (await getCollection("posts", ({ data }) => data.lang === "zh" && !data.draft)).sort((a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf());
+  return categories.map(category => ({ params: { slug: category.slug }, props: { category, posts: allPosts.filter(post => category.sourceCategories.includes(post.data.category as never)) } }));
+}
+const { category, posts } = Astro.props;
+---
+<SiteLayout title={`${category.zh.title} — CARLEIGHT`} description={category.zh.description} lang="zh" alternatePath={`/en/category/${category.slug}`}>
+  <CategoryPage lang="zh" {category} {posts} />
+</SiteLayout>
+
