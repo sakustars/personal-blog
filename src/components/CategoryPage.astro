@@ -1,0 +1,174 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { Category } from "../data/categories";
+import { categories } from "../data/categories";
+
+interface Props {
+  lang: "zh" | "en";
+  category: Category;
+  posts: CollectionEntry<"posts">[];
+}
+const { lang, category, posts } = Astro.props;
+const copy = category[lang];
+const home = lang === "zh" ? "/" : "/en/";
+const categoryBase = lang === "zh" ? "/category" : "/en/category";
+const articleUrl = (post: CollectionEntry<"posts">) =>
+  lang === "zh"
+    ? `/article/${post.data.translationKey}`
+    : `/en/article/${post.data.translationKey}`;
+const date = (value: Date) =>
+  new Intl.DateTimeFormat(lang === "zh" ? "zh-CN" : "en-US", {
+    year: "numeric",
+    month: lang === "zh" ? "long" : "short",
+    day: "numeric",
+  }).format(value);
+const searchText = (post: CollectionEntry<"posts">) =>
+  [
+    post.data.title,
+    post.data.description,
+    post.data.deck,
+    copy.label,
+    date(post.data.pubDatetime),
+    post.data.tags.join(" "),
+    post.body,
+  ]
+    .filter(Boolean)
+    .join(" ");
+const searchLabel =
+  lang === "zh" ? `搜索${copy.label}栏目` : `Search ${copy.label}`;
+const noMatches =
+  lang === "zh"
+    ? "当前栏目没有匹配的文章"
+    : "No matching writing in this section";
+---
+
+<section
+  class="category-breadcrumb"
+  aria-label={lang === "zh" ? "面包屑" : "Breadcrumb"}
+>
+  <a href={home}>Blog</a><span>/</span><span>{copy.label}</span>
+</section>
+
+<section class="category-hero">
+  <details class="category-picker">
+    <summary>
+      <span class="category-picker-mark" aria-hidden="true">⌘</span>
+      <span>{copy.label}</span>
+      <svg
+        class="category-picker-chevron"
+        viewBox="0 0 16 16"
+        aria-hidden="true"><path d="m4 6 4 4 4-4"></path></svg
+      >
+    </summary>
+    <nav aria-label={lang === "zh" ? "选择栏目" : "Choose a section"}>
+      {
+        categories.map(item => (
+          <a
+            class:list={{ active: item.slug === category.slug }}
+            href={`${categoryBase}/${item.slug}`}
+          >
+            {item[lang].label}
+            <span>→</span>
+          </a>
+        ))
+      }
+    </nav>
+  </details>
+  <div class="category-intro">
+    <h1>{copy.title}</h1>
+    <p>{copy.description}</p>
+  </div>
+</section>
+
+<section class="category-results" data-post-search>
+  <div class="category-results-heading">
+    <div class="category-results-title">
+      <span>{lang === "zh" ? "文章" : "Writing"}</span>
+      <span
+        class="category-results-status"
+        aria-live="polite"
+        data-search-status
+        data-singular={lang === "zh" ? "篇" : "post"}
+        data-plural={lang === "zh" ? "篇" : "posts"}
+        ><span data-search-count>{posts.length}</span>
+        <span data-count-label
+          >{lang === "zh" ? "篇" : posts.length === 1 ? "post" : "posts"}</span
+        ></span
+      >
+    </div>
+    {
+      posts.length > 0 && (
+        <label class="archive-search category-search">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <>
+              <circle cx="11" cy="11" r="6.5" />
+              <path d="m16 16 4 4" />
+            </>
+          </svg>
+          <input
+            data-search-input
+            type="search"
+            placeholder={searchLabel}
+            aria-label={searchLabel}
+            autocomplete="off"
+          />
+        </label>
+      )
+    }
+  </div>
+  {
+    posts.length > 0 ? (
+      <div class="category-list">
+        {posts.map(post => (
+          <a
+            href={articleUrl(post)}
+            data-search-row
+            data-search={searchText(post)}
+          >
+            <div class="category-row-meta">
+              <span>{copy.label}</span>
+              <time datetime={post.data.pubDatetime.toISOString()}>
+                {date(post.data.pubDatetime)}
+              </time>
+            </div>
+            <div class="category-row-copy">
+              <h2>{post.data.title}</h2>
+              <p>{post.data.description}</p>
+            </div>
+            <span class="category-row-arrow" aria-hidden="true">
+              ↗
+            </span>
+          </a>
+        ))}
+        <p class="category-search-empty" data-search-empty hidden>
+          {noMatches}
+        </p>
+      </div>
+    ) : (
+      <div class="category-empty">
+        <p>
+          {lang === "zh"
+            ? "这个栏目还没有文章。新的笔记会从这里开始。"
+            : "There is no writing in this section yet. New notes will begin here."}
+        </p>
+        <a href={home}>
+          {lang === "zh" ? "返回全部文章" : "Back to all writing"} →
+        </a>
+      </div>
+    )
+  }
+</section>
+
+<script is:inline>
+  document
+    .querySelectorAll(".category-picker nav a")
+    .forEach(link =>
+      link.addEventListener("click", () =>
+        link.closest("details")?.removeAttribute("open")
+      )
+    );
+</script>
+<script>
+  import { setupPostSearch } from "../scripts/postSearch";
+  setupPostSearch();
+</script>

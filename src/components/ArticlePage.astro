@@ -1,0 +1,33 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import Cover from "./Cover.astro";
+import { getReadingTime } from "../utils/readingTime";
+
+interface Props { lang: "zh" | "en"; post: CollectionEntry<"posts">; posts: CollectionEntry<"posts">[] }
+const { lang, post, posts } = Astro.props;
+const { Content } = await render(post);
+const index = posts.findIndex(item => item.id === post.id);
+const previous = posts[index - 1];
+const next = posts[index + 1];
+const urlFor = (item: CollectionEntry<"posts">) => lang === "zh" ? `/article/${item.data.translationKey}` : `/en/article/${item.data.translationKey}`;
+const date = new Intl.DateTimeFormat(lang === "zh" ? "zh-CN" : "en-US", { year: "numeric", month: lang === "zh" ? "long" : "short", day: "numeric" }).format(post.data.pubDatetime);
+const categoryMap = { Systems: "科学", Cognition: "笔记", Methods: "科学" } as const;
+const category = lang === "zh" ? categoryMap[post.data.category as keyof typeof categoryMap] : post.data.category;
+const readingTime = getReadingTime(post.body ?? "", lang);
+---
+<article class="article-page">
+  <header class="article-header">
+    <a class="back-link" href={lang === "zh" ? "/" : "/en/"}>← {lang === "zh" ? "全部文章" : "All writing"}</a>
+    <div class="article-heading-grid">
+      <div class="article-meta-column"><span>{category}</span><span>{date}</span><span>{readingTime}</span><small>0{index + 1} / 03</small></div>
+      <div><h1>{post.data.title}</h1><p>{post.data.deck}</p></div>
+    </div>
+  </header>
+  <div class="article-cover"><Cover type={post.data.cover} large /></div>
+  <div class="article-reading-layout"><div class="prose"><Content /></div></div>
+  <nav class="article-nav" aria-label={lang === "zh" ? "文章导航" : "Article navigation"}>
+    <div>{previous && <a href={urlFor(previous)}><span>← {lang === "zh" ? "上一篇" : "Previous"}</span><strong>{previous.data.title}</strong></a>}</div>
+    <div>{next && <a href={urlFor(next)}><span>{lang === "zh" ? "下一篇" : "Next"} →</span><strong>{next.data.title}</strong></a>}</div>
+  </nav>
+</article>

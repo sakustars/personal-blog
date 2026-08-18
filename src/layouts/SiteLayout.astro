@@ -1,0 +1,45 @@
+---
+import "@fontsource/noto-serif/400.css";
+import "@fontsource/noto-serif/600.css";
+import "../styles/global.css";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+
+interface Props { title: string; description: string; lang: "zh" | "en"; alternatePath: string }
+const { title, description, lang, alternatePath } = Astro.props;
+---
+<!doctype html>
+<html lang={lang === "zh" ? "zh-CN" : "en"}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <script is:inline>
+      try { document.documentElement.dataset.theme = localStorage.getItem("carleight-theme") || "light"; } catch {}
+    </script>
+  </head>
+  <body>
+    <SiteHeader {lang} {alternatePath} />
+    <main><slot /></main>
+    <SiteFooter {lang} />
+    <script>
+      import panguBundle from "pangu/dist/browser/pangu.js";
+      const candidates = [panguBundle, panguBundle?.default, panguBundle?.default?.default];
+      const pangu = candidates.find(candidate => typeof candidate?.spacingElement === "function");
+      if (document.documentElement.lang.startsWith("zh") && pangu) pangu.spacingElement(document.body);
+      document.querySelectorAll("[data-language]").forEach(link => link.addEventListener("click", () => localStorage.setItem("carleight-language", link.getAttribute("data-language") || "zh")));
+      const themeToggle = document.querySelector(".theme-toggle");
+      const syncThemeToggle = () => themeToggle?.setAttribute("aria-pressed", String(document.documentElement.dataset.theme === "dark"));
+      syncThemeToggle();
+      themeToggle?.addEventListener("click", () => {
+        const theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+        document.documentElement.dataset.theme = theme;
+        localStorage.setItem("carleight-theme", theme);
+        syncThemeToggle();
+      });
+      if (location.pathname === "/" && localStorage.getItem("carleight-language") === "en") location.replace("/en/");
+    </script>
+  </body>
+</html>
