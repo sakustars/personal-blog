@@ -1,27 +1,46 @@
 ---
 interface Props { lang: "zh" | "en"; alternatePath: string }
 const { lang, alternatePath } = Astro.props;
+const pathname = Astro.url.pathname;
 const home = lang === "zh" ? "/" : "/en/";
-const labels = lang === "zh" ? { articles: "文章", archive: "归档", about: "关于" } : { articles: "Writing", archive: "Archive", about: "About" };
+const blog = lang === "zh" ? "/blog/" : "/en/blog/";
+const friends = lang === "zh" ? "/friends/" : "/en/friends/";
+const isAbout = pathname === home;
+const isBlog = pathname.startsWith(blog) || pathname.includes("/article/") || pathname.includes("/category/");
+const isFriends = pathname.startsWith(friends);
 ---
 <header class="site-header">
-  <div class="header-main">
-    <div class="header-inner">
-      <a class="wordmark" href={home}>CARLEIGHT</a>
-      <nav aria-label={lang === "zh" ? "主导航" : "Main navigation"}>
-        <a href={`${home}#writing`}>{labels.articles}</a>
-        <a href={`${home}#archive`}>{labels.archive}</a>
-        <a href={`${home}#about`}>{labels.about}</a>
-      </nav>
+  <div class="header-inner">
+    <a class="wordmark" href={home}>CARLEIGHT</a>
+    <nav aria-label={lang === "zh" ? "主导航" : "Main navigation"}>
+      <a class:list={{ active: isAbout }} href={home}>About</a>
+      <a class:list={{ active: isBlog }} href={blog}>Blog</a>
+      <a class:list={{ active: isFriends }} href={friends}>Friends</a>
+    </nav>
+    <div class="account-area">
+      <a class="github-login" href="/api/auth/github" data-github-login>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="7" r="4"></circle><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path></svg>
+        <span data-account-label>GitHub</span>
+      </a>
       <div class="language-switch" aria-label="Language">
-        <a class:list={{ active: lang === "zh" }} data-language="zh" href={lang === "zh" ? Astro.url.pathname : alternatePath}>中</a>
+        <a class:list={{ active: lang === "zh" }} data-language="zh" href={lang === "zh" ? pathname : alternatePath}>中</a>
         <span>/</span>
-        <a class:list={{ active: lang === "en" }} data-language="en" href={lang === "en" ? Astro.url.pathname : alternatePath}>EN</a>
+        <a class:list={{ active: lang === "en" }} data-language="en" href={lang === "en" ? pathname : alternatePath}>EN</a>
       </div>
-      <button class="theme-toggle" type="button" aria-label={lang === "zh" ? "切换明暗模式" : "Toggle color mode"}>
-        <svg class="theme-icon theme-icon-moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M15.7 13.5A7 7 0 0 1 6.5 4.3 6 6 0 1 0 15.7 13.5Z"/></svg>
-        <svg class="theme-icon theme-icon-sun" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.2"/><path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M4 4l1.4 1.4M14.6 14.6 16 16M16 4l-1.4 1.4M5.4 14.6 4 16"/></svg>
-      </button>
     </div>
   </div>
 </header>
+
+<script>
+  const accountLabel = document.querySelector<HTMLElement>("[data-account-label]");
+  const loginLink = document.querySelector<HTMLAnchorElement>("[data-github-login]");
+  fetch("/api/auth/me")
+    .then(response => response.ok ? response.json() : null)
+    .then(user => {
+      if (!user?.login || !accountLabel || !loginLink) return;
+      accountLabel.textContent = user.name || user.login;
+      loginLink.href = "/api/auth/logout";
+      loginLink.title = "Logout";
+    })
+    .catch(() => {});
+</script>
