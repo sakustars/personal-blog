@@ -14,6 +14,7 @@ const copy =
         github: "使用 GitHub 继续",
         apple: "使用 Apple 继续",
         note: "登录即表示你同意本站的隐私说明。",
+        unavailable: "登录服务正在配置，请稍后再试。",
         close: "关闭登录",
       }
     : {
@@ -23,6 +24,7 @@ const copy =
         github: "Continue with GitHub",
         apple: "Continue with Apple",
         note: "By continuing, you agree to this site's privacy notice.",
+        unavailable: "Sign-in is being configured. Please try again later.",
         close: "Close sign-in",
       };
 ---
@@ -71,5 +73,12 @@ const copy =
       ><span aria-hidden="true">→</span></a
     >
   </div>
+  <p
+    class="login-status"
+    data-login-status
+    data-unavailable-copy={copy.unavailable}
+    aria-live="polite"
+    hidden
+  >{copy.unavailable}</p>
   <p class="login-note">{copy.note}</p>
 </div>

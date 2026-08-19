@@ -153,6 +153,11 @@ img {
   line-height: 1;
   font-weight: 500;
 }
+.account-login[hidden],
+.account-trigger[hidden],
+.account-menu[hidden] {
+  display: none;
+}
 .account-avatar {
   width: 17px;
   height: 17px;
@@ -214,9 +219,6 @@ img {
   box-shadow: 0 18px 46px rgba(0, 0, 0, 0.18);
   backdrop-filter: blur(22px) saturate(120%);
   -webkit-backdrop-filter: blur(22px) saturate(120%);
-}
-.account-menu[hidden] {
-  display: none;
 }
 .account-menu-greeting {
   display: grid;
@@ -405,15 +407,15 @@ html[data-theme="dark"] .theme-icon-sun {
   place-items: center;
   padding: 32px;
   overflow-y: auto;
-  background: color-mix(in srgb, var(--paper) 34%, transparent);
-  backdrop-filter: blur(18px) saturate(78%);
-  -webkit-backdrop-filter: blur(18px) saturate(78%);
+  background: color-mix(in srgb, var(--paper) 58%, transparent);
+  backdrop-filter: blur(24px) saturate(72%);
+  -webkit-backdrop-filter: blur(24px) saturate(72%);
 }
 .login-overlay[hidden] {
   display: none;
 }
 .login-overlay .login-panel {
-  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  background: color-mix(in srgb, var(--panel) 98%, transparent);
   border-color: color-mix(in srgb, var(--line) 76%, transparent);
   box-shadow: 0 32px 96px rgba(0, 0, 0, 0.24);
   animation: login-panel-enter 180ms ease-out both;
@@ -498,6 +500,15 @@ html[data-theme="dark"] .theme-icon-sun {
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 7%, transparent);
 }
+.login-providers a.is-unavailable {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+.login-providers a.is-unavailable:hover,
+.login-providers a.is-unavailable:focus-visible {
+  border-color: var(--line);
+  background: transparent;
+}
 .provider-mark {
   color: var(--ink);
   font:
@@ -517,6 +528,15 @@ html[data-theme="dark"] .theme-icon-sun {
   color: var(--muted);
   font-size: 0.75rem;
   line-height: 1.5;
+}
+.login-status {
+  margin: 18px 0 -8px;
+  color: var(--accent);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+.login-status[hidden] {
+  display: none;
 }
 
 .account-page {

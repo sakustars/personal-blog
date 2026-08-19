@@ -169,6 +169,7 @@ const isLoginPage = pathname === login;
     loginOverlay?.querySelector<HTMLButtonElement>("[data-login-close]");
   const lang = root?.dataset.lang || "en";
   let previouslyFocused: HTMLElement | null = null;
+  let providerStatusLoaded = false;
 
   const overlayFocusables = () =>
     Array.from(
@@ -187,6 +188,40 @@ const isLoginPage = pathname === login;
       });
   };
 
+  const loadProviderStatus = async () => {
+    if (!loginOverlay || providerStatusLoaded) return;
+    const statusNode = loginOverlay.querySelector<HTMLElement>(
+      "[data-login-status]"
+    );
+    try {
+      const response = await fetch("/api/auth/providers", {
+        credentials: "same-origin",
+      });
+      if (!response.ok) return;
+      const data = await response.json();
+      const links = Array.from(
+        loginOverlay.querySelectorAll<HTMLAnchorElement>("[data-provider]")
+      );
+      let available = 0;
+      links.forEach(link => {
+        const provider = link.dataset.provider || "";
+        const enabled = Boolean(data?.providers?.[provider]);
+        link.classList.toggle("is-unavailable", !enabled);
+        link.setAttribute("aria-disabled", String(!enabled));
+        if (enabled) {
+          available += 1;
+          link.removeAttribute("tabindex");
+        } else {
+          link.setAttribute("tabindex", "-1");
+        }
+      });
+      if (statusNode) statusNode.hidden = available > 0;
+      providerStatusLoaded = true;
+    } catch {
+      // Keep the links usable if the status endpoint is temporarily unavailable.
+    }
+  };
+
   const closeLogin = () => {
     if (!loginOverlay || loginOverlay.hidden) return;
     loginOverlay.hidden = true;
@@ -202,6 +237,7 @@ const isLoginPage = pathname === login;
         ? document.activeElement
         : null;
     syncProviderLinks();
+    void loadProviderStatus();
     loginOverlay.hidden = false;
     loginOverlay.setAttribute("aria-hidden", "false");
     document.documentElement.classList.add("login-overlay-open");
@@ -247,6 +283,12 @@ const isLoginPage = pathname === login;
     if (event.target === loginOverlay) closeLogin();
   });
   loginPanel?.addEventListener("click", event => event.stopPropagation());
+  loginPanel?.addEventListener("click", event => {
+    const link = (event.target as Element).closest<HTMLAnchorElement>(
+      '[data-provider][aria-disabled="true"]'
+    );
+    if (link) event.preventDefault();
+  });
   loginOverlay?.addEventListener("keydown", event => {
     if (event.key !== "Tab") return;
     const focusable = overlayFocusables();

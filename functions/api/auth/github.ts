@@ -6,7 +6,7 @@ export async function onRequest(context: any) {
   const { clientId } = authConfig(context.env);
 
   if (!clientId) {
-    return new Response("GitHub login is not configured: missing GITHUB_CLIENT_ID.", { status: 500 });
+    return new Response("GitHub login is not configured: missing GITHUB_CLIENT_ID.", { status: 503 });
   }
 
   const returnTo = safeReturnTo(url.searchParams.get("return_to") || request.headers.get("Referer"));

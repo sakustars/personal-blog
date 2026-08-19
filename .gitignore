@@ -26,6 +26,9 @@ pnpm-debug.log*
 # pagefind
 public/pagefind
 
+# Cloudflare local runtime state
+.wrangler/
+
 # pnpm
 .pnpm-store
 
