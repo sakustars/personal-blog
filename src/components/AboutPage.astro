@@ -1,22 +1,27 @@
 ---
+import "leaflet/dist/leaflet.css";
+
 interface Props { lang: "zh" | "en" }
 const { lang } = Astro.props;
 const copy = lang === "zh"
   ? {
       intro: [
-        "Writing on brain science, technology, reading, and everyday life.",
-        "Interested in how minds learn, remember, and create.",
-        "Always eager to study deeper & build better tools.",
+        "关于脑科学、技术、阅读与日常生活的写作。",
+        "关心心智如何学习、记忆与创造。",
+        "持续学习，也持续把想法做成工具。",
       ],
-      journey: "Journey",
-      based: "Based",
-      guestBook: "Guest Book",
-      site: "About This Site",
+      journey: "经历",
+      based: "所在城市",
+      guestBook: "留言簿",
+      site: "关于这个网站",
+      location: "珠海，中国",
+      openMap: "在地图中打开珠海",
       guestCopy: [
-        "Hey, Carleight! You can leave any message here.",
-        "The message is only visible to you and me. You can only submit one message per 24 hours.",
-        "I may reply to you via your email (1003304159@qq.com).",
+        "嘿，Carleight！你可以在这里留下任何想说的话。",
+        "留言只会对你和我可见；同一位访客 24 小时内只能提交一次。",
+        "我可能会通过你的邮箱回复。",
       ],
+      guestPending: "留言后端还在制作中，这条消息暂时不会提交。",
     }
   : {
       intro: [
@@ -28,11 +33,14 @@ const copy = lang === "zh"
       based: "Based",
       guestBook: "Guest Book",
       site: "About This Site",
+      location: "Zhuhai, China",
+      openMap: "Open Zhuhai map",
       guestCopy: [
         "Hey, Carleight! You can leave any message here.",
         "The message is only visible to you and me. You can only submit one message per 24 hours.",
-        "I may reply to you via your email (1003304159@qq.com).",
+        "I may reply to you via your email.",
       ],
+      guestPending: "Guest Book backend is coming soon. Your message is not submitted yet.",
     };
 const links = [
   { label: "Email", href: "mailto:1003304159@qq.com" },
@@ -40,17 +48,30 @@ const links = [
   { label: "Twitter", href: "https://twitter.com/" },
   { label: "Telegram", href: "https://t.me/" },
 ];
-const journey = [
-  { date: "2026 — Now", title: "Independent study in brain science & neuroscience", place: "Singapore", description: "Building a personal knowledge system around cognition, memory, learning, and scientific methods." },
-  { date: "2025 — Now", title: "Personal blog & research notes", place: "Online", description: "Writing about science, technology, reading, and everyday observations." },
-  { date: "2024 — 2025", title: "Software, AI tools, and systems learning", place: "Remote", description: "Exploring practical tools that make study, writing, and creation easier." },
-  { date: "Earlier", title: "Long-term curiosity about minds and machines", place: "Everywhere", description: "Reading, collecting notes, and turning vague questions into clearer research directions." },
-];
-const siteHistory = [
-  { date: "Aug. 2026", title: "New Design.", body: "A quieter personal homepage inspired by read.cv-style editorial typography." },
-  { date: "Aug. 2026", title: "Blog as a Subpage.", body: "Moved writing into a dedicated Blog page so the homepage can focus on Carleight." },
-  { date: "Aug. 2026", title: "Cloudflare Deployment.", body: "GitHub Actions deploys the static Astro site to Cloudflare Pages after each push." },
-];
+const journey = lang === "zh"
+  ? [
+      { date: "2026 — 至今", title: "脑科学与神经科学的自学与研究准备", place: "新加坡 / 珠海", description: "围绕认知、记忆、学习与科学方法，建立自己的长期知识系统。" },
+      { date: "2025 — 至今", title: "个人博客与研究笔记", place: "Online", description: "记录科学、技术、阅读和日常观察，把模糊的问题写清楚。" },
+      { date: "2024 — 2025", title: "软件、AI 工具与系统学习", place: "Remote", description: "探索能让学习、写作和创造更顺手的工具。" },
+      { date: "更早", title: "对心智与机器的长期好奇", place: "Everywhere", description: "阅读、做笔记，并把兴趣逐步整理成更明确的研究方向。" },
+    ]
+  : [
+      { date: "2026 — Now", title: "Independent study in brain science & neuroscience", place: "Singapore / Zhuhai", description: "Building a personal knowledge system around cognition, memory, learning, and scientific methods." },
+      { date: "2025 — Now", title: "Personal blog & research notes", place: "Online", description: "Writing about science, technology, reading, and everyday observations." },
+      { date: "2024 — 2025", title: "Software, AI tools, and systems learning", place: "Remote", description: "Exploring practical tools that make study, writing, and creation easier." },
+      { date: "Earlier", title: "Long-term curiosity about minds and machines", place: "Everywhere", description: "Reading, collecting notes, and turning vague questions into clearer research directions." },
+    ];
+const siteHistory = lang === "zh"
+  ? [
+      { date: "2026年8月", title: "新的个人主页设计。", body: "使用更安静的排版，把博客变成子页面，让首页更像个人介绍。" },
+      { date: "2026年8月", title: "加入地图与所在城市。", body: "使用开源 Leaflet 地图库，把 Based 区域定位到珠海。" },
+      { date: "2026年8月", title: "Cloudflare 自动部署。", body: "每次 push 后由 GitHub Actions 构建并部署静态 Astro 站点。" },
+    ]
+  : [
+      { date: "Aug. 2026", title: "New Design.", body: "A quieter personal homepage inspired by read.cv-style editorial typography." },
+      { date: "Aug. 2026", title: "Open-source Map.", body: "The Based section uses the open-source Leaflet map library and points to Zhuhai." },
+      { date: "Aug. 2026", title: "Cloudflare Deployment.", body: "GitHub Actions deploys the static Astro site to Cloudflare Pages after each push." },
+    ];
 ---
 <main class="about-page">
   <section class="about-intro" aria-labelledby="about-title">
@@ -79,23 +100,18 @@ const siteHistory = [
 
   <section class="about-section based-section" aria-labelledby="based-title">
     <h2 id="based-title">{copy.based}</h2>
-    <div class="map-card" role="img" aria-label="Map centered around Hangzhou, China">
-      <div class="map-grid"></div>
-      <div class="map-city city-hangzhou">Hangzhou</div>
-      <div class="map-city city-shanghai">Shanghai</div>
-      <div class="map-city city-suzhou">Suzhou</div>
-      <div class="map-city city-ningbo">Ningbo</div>
-      <div class="location-marker"></div>
-      <div class="plane-marker">✈</div>
-      <div class="map-label">Hangzhou, China</div>
-      <a class="map-expand" href="https://www.openstreetmap.org/search?query=Hangzhou%2C%20China" target="_blank" rel="noreferrer" aria-label="Open Hangzhou map">↗</a>
+    <div class="map-card" aria-label={copy.openMap}>
+      <div class="leaflet-map" data-leaflet-map data-lat="22.2711" data-lng="113.5767"></div>
+      <div class="location-marker" aria-hidden="true"></div>
+      <div class="map-label">{copy.location}</div>
+      <a class="map-expand" href="https://www.openstreetmap.org/search?query=Zhuhai%2C%20China" target="_blank" rel="noreferrer" aria-label={copy.openMap}>↗</a>
     </div>
   </section>
 
   <section class="about-section guest-section" aria-labelledby="guest-title">
     <h2 id="guest-title">{copy.guestBook}</h2>
     <div class="guest-copy">{copy.guestCopy.map(line => <p>{line}</p>)}</div>
-    <form class="guest-form" data-guest-book>
+    <form class="guest-form" data-guest-book data-pending-message={copy.guestPending}>
       <div class="message-box">
         <textarea name="message" placeholder="Say Something..." maxlength="800"></textarea>
         <button type="submit">Submit</button>
@@ -123,12 +139,15 @@ const siteHistory = [
 </main>
 
 <script>
+  import L from "leaflet";
+
   document.querySelector<HTMLFormElement>("[data-guest-book]")?.addEventListener("submit", event => {
     event.preventDefault();
     const form = event.currentTarget as HTMLFormElement;
     const status = form.querySelector<HTMLElement>("[data-guest-status]");
-    if (status) status.textContent = "Guest Book backend is coming soon. Your message is not submitted yet.";
+    if (status) status.textContent = form.dataset.pendingMessage || "Guest Book backend is coming soon.";
   });
+
   document.querySelector<HTMLButtonElement>("[data-toggle-site]")?.addEventListener("click", event => {
     const timeline = document.querySelector<HTMLElement>("[data-site-timeline]");
     const button = event.currentTarget as HTMLButtonElement;
@@ -136,4 +155,51 @@ const siteHistory = [
     const hidden = timeline.toggleAttribute("hidden");
     button.setAttribute("aria-expanded", String(!hidden));
   });
+
+  const mapElement = document.querySelector<HTMLElement>("[data-leaflet-map]");
+  if (mapElement) {
+    const lat = Number(mapElement.dataset.lat);
+    const lng = Number(mapElement.dataset.lng);
+    const map = L.map(mapElement, {
+      center: [lat, lng],
+      zoom: 11,
+      zoomControl: false,
+      attributionControl: true,
+      dragging: false,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      boxZoom: false,
+      keyboard: false,
+    });
+
+    const tiles = {
+      light: L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+        subdomains: "abcd",
+        maxZoom: 20,
+        attribution: "© OpenStreetMap contributors © CARTO",
+      }),
+      dark: L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+        subdomains: "abcd",
+        maxZoom: 20,
+        attribution: "© OpenStreetMap contributors © CARTO",
+      }),
+    };
+
+    let currentLayer: L.TileLayer | undefined;
+    const syncMapTheme = () => {
+      const theme = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+      const nextLayer = tiles[theme];
+      if (currentLayer === nextLayer) return;
+      if (currentLayer) map.removeLayer(currentLayer);
+      currentLayer = nextLayer.addTo(map);
+      mapElement.dataset.mapTheme = theme;
+    };
+
+    syncMapTheme();
+    requestAnimationFrame(() => map.invalidateSize());
+    new MutationObserver(syncMapTheme).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+  }
 </script>
