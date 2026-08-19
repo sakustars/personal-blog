@@ -6,18 +6,21 @@ const { lang } = Astro.props;
 const copy = lang === "zh"
   ? {
       intro: [
-        "关于脑科学、技术、阅读与日常生活的写作。",
-        "关心心智如何学习、记忆与创造。",
-        "持续学习，也持续把想法做成工具。",
+        "UI/UX 设计、前端与 iOS 开发。",
+        "从需求、交互和视觉系统出发，把想法推进到可运行的产品。",
+        "也为 AI Agent 与研究软件建立可复现、可审计的交付链路。",
       ],
-      journey: "经历",
+      journey: "代表项目",
+      capabilities: "核心能力",
       based: "所在城市",
+      coordinates: "22°16′N · 113°35′E",
+      mapLink: "打开地图",
       guestBook: "留言簿",
       site: "关于这个网站",
       location: "珠海，中国",
       openMap: "在地图中打开珠海",
       guestCopy: [
-        "嘿，Carleight！你可以在这里留下任何想说的话。",
+        "你好！你可以在这里留下任何想说的话。",
         "留言只会对你和我可见；同一位访客 24 小时内只能提交一次。",
         "我可能会通过你的邮箱回复。",
       ],
@@ -25,61 +28,94 @@ const copy = lang === "zh"
     }
   : {
       intro: [
-        "Writing on brain science, technology, reading, and everyday life.",
-        "Interested in how minds learn, remember, and create.",
-        "Always eager to study deeper & build better tools.",
+        "UI/UX design, front-end, and iOS development.",
+        "Turning ideas into working products through research, interaction, visual systems, and code.",
+        "Also building reproducible, auditable delivery pipelines for AI agents and research software.",
       ],
-      journey: "Journey",
+      journey: "Selected Work",
+      capabilities: "Capabilities",
       based: "Based",
+      coordinates: "22°16′N · 113°35′E",
+      mapLink: "Open map",
       guestBook: "Guest Book",
       site: "About This Site",
       location: "Zhuhai, China",
       openMap: "Open Zhuhai map",
       guestCopy: [
-        "Hey, Carleight! You can leave any message here.",
+        "Hello! You can leave any message here.",
         "The message is only visible to you and me. You can only submit one message per 24 hours.",
         "I may reply to you via your email.",
       ],
       guestPending: "Guest Book backend is coming soon. Your message is not submitted yet.",
     };
 const links = [
-  { label: "Email", href: "mailto:1003304159@qq.com" },
+  { label: "Email", href: "mailto:carleightwu@icloud.com" },
   { label: "GitHub", href: "https://github.com/sakustars" },
-  { label: "Twitter", href: "https://twitter.com/" },
-  { label: "Telegram", href: "https://t.me/" },
+  { label: "Twitter", href: "https://x.com/carleightwu" },
 ];
 const journey = lang === "zh"
   ? [
-      { date: "2026 — 至今", title: "脑科学与神经科学的自学与研究准备", place: "新加坡 / 珠海", description: "围绕认知、记忆、学习与科学方法，建立自己的长期知识系统。" },
-      { date: "2025 — 至今", title: "个人博客与研究笔记", place: "Online", description: "记录科学、技术、阅读和日常观察，把模糊的问题写清楚。" },
-      { date: "2024 — 2025", title: "软件、AI 工具与系统学习", place: "Remote", description: "探索能让学习、写作和创造更顺手的工具。" },
-      { date: "更早", title: "对心智与机器的长期好奇", place: "Everywhere", description: "阅读、做笔记，并把兴趣逐步整理成更明确的研究方向。" },
+      { date: "2025.01 — 至今", title: "AdventureX", place: "产品设计 · 前端与 iOS 开发", description: "负责 United Portal 的设计与前端实现、官网的设计与开发，并完整负责 iOS 应用从产品与 UI 设计到开发和 App Store 上架。" },
+      { date: "2026 — 至今", title: "零一学子", place: "深圳零一学院 · 社会与智能学域", description: "入选深圳零一学院社会与智能学域零一学子。" },
+      { date: "创立至今", title: "Anyvation 创始人", place: "工业设计 · 产品设计", description: "创立 Anyvation，并主导「轻醒」与 Aero-Smart 等产品设计，以结构、形态与使用体验共同推动产品概念落地。", href: "https://anyvation.design/product" },
+      { date: "2026.06 — 至今", title: "Squady", place: "UI/UX 设计", description: "独立负责产品的 UI/UX 设计，梳理核心使用场景、页面层级、交互状态与可复用的视觉规则。" },
+      { date: "2026", title: "深圳超滑所运营 Agent", place: "协调 · 设计 · 开发 · 真实交付", description: "将实际运营流程拆解为可执行步骤，完成 Agent 的设计、开发、试用与交付，而不止停留在概念或原型。" },
+      { date: "2026", title: "3D-STIAS 4.3", place: "研究软件工程与交付", description: "建立可恢复、可审计的三维空间转录组分析工作流；完成 403 项测试、10/10 插件和 500×1,000 合成数据流程验证。结果仅代表 DEMO_ONLY 软件工程验证，不作生物学有效性声明。" },
     ]
   : [
-      { date: "2026 — Now", title: "Independent study in brain science & neuroscience", place: "Singapore / Zhuhai", description: "Building a personal knowledge system around cognition, memory, learning, and scientific methods." },
-      { date: "2025 — Now", title: "Personal blog & research notes", place: "Online", description: "Writing about science, technology, reading, and everyday observations." },
-      { date: "2024 — 2025", title: "Software, AI tools, and systems learning", place: "Remote", description: "Exploring practical tools that make study, writing, and creation easier." },
-      { date: "Earlier", title: "Long-term curiosity about minds and machines", place: "Everywhere", description: "Reading, collecting notes, and turning vague questions into clearer research directions." },
+      { date: "Jan. 2025 — Now", title: "AdventureX", place: "Product design · Front-end · iOS", description: "Designed and implemented the United Portal front end and the official website, while owning the iOS product from product and UI design through development and App Store release." },
+      { date: "2026 — Now", title: "Zero One Scholar", place: "Shenzhen Zero One Academy · Society and Intelligence", description: "Selected as a Zero One Scholar in the Academy's Society and Intelligence domain." },
+      { date: "Founder — Now", title: "Founder of Anyvation", place: "Industrial design · Product design", description: "Founded Anyvation and led product design for work including Qingxing and Aero-Smart, bringing structure, form, and user experience together into grounded product concepts.", href: "https://anyvation.design/product" },
+      { date: "Jun. 2026 — Now", title: "Squady", place: "UI/UX Design", description: "Independently responsible for the product's UI/UX, including core user flows, information hierarchy, interaction states, and reusable visual rules." },
+      { date: "2026", title: "Operations Agent for the Shenzhen Superlubricity Institute", place: "Coordination · Design · Development · Delivery", description: "Turned a real operations workflow into executable steps and delivered a working agent through design, development, field use, and handoff—not merely a concept or prototype." },
+      { date: "2026", title: "3D-STIAS 4.3", place: "Research software engineering & delivery", description: "Built a resumable, auditable 3D spatial-transcriptomics workflow and verified 403 tests, 10/10 plugins, and a 500×1,000 synthetic-data run. This is DEMO_ONLY software validation, not a claim of biological validity." },
+    ];
+const capabilities = lang === "zh"
+  ? [
+      { title: "UI/UX", description: "信息架构、交互原型、视觉规范与设计系统。" },
+      { title: "前端与 iOS", description: "响应式界面、组件化实现、原生开发、测试与上架。" },
+      { title: "工业设计", description: "产品结构、形态语言、使用体验与概念表达。" },
+      { title: "AI Agent", description: "任务拆解、流程编排、异常处理与真实场景交付。" },
+      { title: "研究软件", description: "可复现工作流、自动化测试、打包发布与审计报告。" },
+    ]
+  : [
+      { title: "UI/UX", description: "Information architecture, interaction prototypes, visual systems, and design systems." },
+      { title: "Front-end & iOS", description: "Responsive interfaces, component implementation, native development, testing, and release." },
+      { title: "Industrial Design", description: "Product structure, form language, user experience, and concept communication." },
+      { title: "AI Agents", description: "Task decomposition, workflow orchestration, failure handling, and real-world delivery." },
+      { title: "Research Software", description: "Reproducible workflows, automated testing, packaging, releases, and audit reports." },
     ];
 const siteHistory = lang === "zh"
   ? [
       { date: "2026年8月", title: "新的个人主页设计。", body: "使用更安静的排版，把博客变成子页面，让首页更像个人介绍。" },
       { date: "2026年8月", title: "加入地图与所在城市。", body: "使用开源 Leaflet 地图库，把 Based 区域定位到珠海。" },
-      { date: "2026年8月", title: "Cloudflare 自动部署。", body: "每次 push 后由 GitHub Actions 构建并部署静态 Astro 站点。" },
+      { date: "2026年8月", title: "Cloudflare 自动部署。", body: "每次 push 后由连接的 GitHub 仓库触发 Cloudflare Pages 构建与发布。" },
     ]
   : [
       { date: "Aug. 2026", title: "New Design.", body: "A quieter personal homepage inspired by read.cv-style editorial typography." },
       { date: "Aug. 2026", title: "Open-source Map.", body: "The Based section uses the open-source Leaflet map library and points to Zhuhai." },
-      { date: "Aug. 2026", title: "Cloudflare Deployment.", body: "GitHub Actions deploys the static Astro site to Cloudflare Pages after each push." },
+      { date: "Aug. 2026", title: "Cloudflare Deployment.", body: "Each push to the connected GitHub repository triggers a Cloudflare Pages build and release." },
     ];
 ---
 <main class="about-page">
   <section class="about-intro" aria-labelledby="about-title">
-    <h1 id="about-title">CARLEIGHT</h1>
+    <h1 id="about-title">{lang === "zh" ? "关于" : "About"}</h1>
     <p>{copy.intro.map(line => <><span>{line}</span><br /></>)}</p>
     <nav class="about-links" aria-label={lang === "zh" ? "联系方式" : "Contact links"}>
       {links.map(link => <a href={link.href} target="_blank" rel="noreferrer">{link.label}↗</a>)}
     </nav>
+  </section>
+
+  <section class="about-section" aria-labelledby="capabilities-title">
+    <h2 id="capabilities-title">{copy.capabilities}</h2>
+    <div class="about-timeline">
+      {capabilities.map(item => (
+        <article class="about-timeline-item">
+          <h3>{item.title}</h3>
+          <p class="timeline-description">{item.description}</p>
+        </article>
+      ))}
+    </div>
   </section>
 
   <section class="about-section" aria-labelledby="journey-title">
@@ -89,7 +125,7 @@ const siteHistory = lang === "zh"
         <article class="about-timeline-item">
           <time>{item.date}</time>
           <div>
-            <h3>{item.title}</h3>
+            <h3>{item.href ? <a class="timeline-title-link" href={item.href} target="_blank" rel="noreferrer">{item.title}<span aria-hidden="true">↗</span></a> : item.title}</h3>
             <p class="muted-line">{item.place}</p>
             <p class="timeline-description">{item.description}</p>
           </div>
@@ -99,12 +135,17 @@ const siteHistory = lang === "zh"
   </section>
 
   <section class="about-section based-section" aria-labelledby="based-title">
-    <h2 id="based-title">{copy.based}</h2>
-    <div class="map-card" aria-label={copy.openMap}>
+    <header class="based-heading">
+      <h2 id="based-title">{copy.based}</h2>
+      <span>{copy.location}</span>
+    </header>
+    <div class="map-frame" aria-label={copy.openMap}>
       <div class="leaflet-map" data-leaflet-map data-lat="22.2711" data-lng="113.5767"></div>
       <div class="location-marker" aria-hidden="true"></div>
-      <div class="map-label">{copy.location}</div>
-      <a class="map-expand" href="https://www.openstreetmap.org/search?query=Zhuhai%2C%20China" target="_blank" rel="noreferrer" aria-label={copy.openMap}>↗</a>
+    </div>
+    <div class="map-caption">
+      <span>{copy.coordinates}</span>
+      <a href="https://www.openstreetmap.org/search?query=Zhuhai%2C%20China" target="_blank" rel="noreferrer" aria-label={copy.openMap}>{copy.mapLink}<span aria-hidden="true">↗</span></a>
     </div>
   </section>
 
