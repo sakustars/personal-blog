@@ -16,12 +16,9 @@ const nav = lang === "zh"
     ];
 ---
 <footer class="site-footer">
-  <div class="footer-topline" aria-hidden="true"></div>
-  <div class="footer-grid">
-    <div>
-      <a class="footer-wordmark" href={lang === "zh" ? "/" : "/en/"}>CARLEIGHT</a>
-      <p>{lang === "zh" ? "UI/UX、前端、iOS、AI Agent 与研究软件交付。" : "UI/UX, front-end, iOS, AI agents, and research software delivery."}</p>
-    </div>
+  <div class="footer-main">
+    <a class="footer-wordmark" href={lang === "zh" ? "/" : "/en/"}>CARLEIGHT</a>
+    <p>{lang === "zh" ? "设计、代码与日常记录。" : "Design, code, and everyday notes."}</p>
     <nav class="footer-links" aria-label={lang === "zh" ? "页脚导航" : "Footer navigation"}>
       {nav.map(item => (
         <a href={item.href} target={item.external ? "_blank" : undefined} rel={item.external ? "noreferrer" : undefined}>
@@ -32,6 +29,6 @@ const nav = lang === "zh"
   </div>
   <div class="footer-bottom">
     <span>© 2026 Carleight</span>
-    <span>{lang === "zh" ? "珠海 · 新加坡" : "Zhuhai · Singapore"}</span>
+    <span>{lang === "zh" ? "珠海 / 新加坡" : "Zhuhai / Singapore"}</span>
   </div>
 </footer>
