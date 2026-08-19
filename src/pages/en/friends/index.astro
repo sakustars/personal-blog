@@ -1,11 +1,39 @@
 ---
 import SiteLayout from "../../../layouts/SiteLayout.astro";
+
+const friends = [
+  {
+    name: "MACW07",
+    url: "https://macw07.org/",
+    domain: "macw07.org",
+    description: "A friend's personal site for creation, technology, and everyday notes.",
+  },
+  {
+    name: "uint8t",
+    url: "https://uint8t.top/",
+    domain: "uint8t.top",
+    description: "A personal homepage collecting long-lived ideas and projects.",
+  },
+];
 ---
-<SiteLayout title="CARLEIGHT — Friends" description="Friend links will live here." lang="en" alternatePath="/friends/">
+<SiteLayout title="CARLEIGHT — Friends" description="Friend links for Carleight." lang="en" alternatePath="/friends/">
   <main class="about-page friends-page">
     <section class="about-intro">
       <h1>Friends</h1>
-      <p>A clean placeholder for friend links, recommended sites, or a future blogroll.</p>
+      <p>A small set of personal sites I want to keep within reach.</p>
+    </section>
+
+    <section class="about-section friends-section" aria-labelledby="friends-title">
+      <h2 id="friends-title">Links</h2>
+      <div class="friend-list">
+        {friends.map(friend => (
+          <a class="friend-card" href={friend.url} target="_blank" rel="noreferrer">
+            <span>{friend.domain}</span>
+            <strong>{friend.name}<span aria-hidden="true">↗</span></strong>
+            <p>{friend.description}</p>
+          </a>
+        ))}
+      </div>
     </section>
   </main>
 </SiteLayout>

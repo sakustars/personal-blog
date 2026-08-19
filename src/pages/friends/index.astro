@@ -1,11 +1,39 @@
 ---
 import SiteLayout from "../../layouts/SiteLayout.astro";
+
+const friends = [
+  {
+    name: "MACW07",
+    url: "https://macw07.org/",
+    domain: "macw07.org",
+    description: "朋友的个人网站。关于创作、技术与日常记录。",
+  },
+  {
+    name: "uint8t",
+    url: "https://uint8t.top/",
+    domain: "uint8t.top",
+    description: "朋友的个人主页。收集一些长期在线的想法与项目。",
+  },
+];
 ---
-<SiteLayout title="CARLEIGHT — Friends" description="朋友链接会放在这里。" lang="zh" alternatePath="/en/friends/">
+<SiteLayout title="CARLEIGHT — Friends" description="Carleight 的友链。" lang="zh" alternatePath="/en/friends/">
   <main class="about-page friends-page">
     <section class="about-intro">
-      <h1>Friends</h1>
-      <p>这里先留一个干净的 friends 页面，之后可以放朋友链接、推荐站点或 blogroll。</p>
+      <h1>友链</h1>
+      <p>这里放一些我愿意长期保留入口的朋友网站。排序没有意义，只是先把它们放在这里。</p>
+    </section>
+
+    <section class="about-section friends-section" aria-labelledby="friends-title">
+      <h2 id="friends-title">Friends</h2>
+      <div class="friend-list">
+        {friends.map(friend => (
+          <a class="friend-card" href={friend.url} target="_blank" rel="noreferrer">
+            <span>{friend.domain}</span>
+            <strong>{friend.name}<span aria-hidden="true">↗</span></strong>
+            <p>{friend.description}</p>
+          </a>
+        ))}
+      </div>
     </section>
   </main>
 </SiteLayout>

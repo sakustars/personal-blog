@@ -1,11 +1,37 @@
 ---
 interface Props { lang: "zh" | "en" }
 const { lang } = Astro.props;
+const nav = lang === "zh"
+  ? [
+      { label: "关于", href: "/" },
+      { label: "博客", href: "/blog/" },
+      { label: "友链", href: "/friends/" },
+      { label: "GitHub", href: "https://github.com/sakustars", external: true },
+    ]
+  : [
+      { label: "About", href: "/en/" },
+      { label: "Blog", href: "/en/blog/" },
+      { label: "Friends", href: "/en/friends/" },
+      { label: "GitHub", href: "https://github.com/sakustars", external: true },
+    ];
 ---
-<footer class="site-footer" id="about">
+<footer class="site-footer">
+  <div class="footer-topline" aria-hidden="true"></div>
   <div class="footer-grid">
-    <div class="footer-wordmark">CARLEIGHT</div>
-    <p>{lang === "zh" ? "产品设计、前端、iOS、AI Agent 与研究软件。" : "Product design, front-end, iOS, AI agents, and research software."}</p>
+    <div>
+      <a class="footer-wordmark" href={lang === "zh" ? "/" : "/en/"}>CARLEIGHT</a>
+      <p>{lang === "zh" ? "UI/UX、前端、iOS、AI Agent 与研究软件交付。" : "UI/UX, front-end, iOS, AI agents, and research software delivery."}</p>
+    </div>
+    <nav class="footer-links" aria-label={lang === "zh" ? "页脚导航" : "Footer navigation"}>
+      {nav.map(item => (
+        <a href={item.href} target={item.external ? "_blank" : undefined} rel={item.external ? "noreferrer" : undefined}>
+          {item.label}{item.external ? "↗" : ""}
+        </a>
+      ))}
+    </nav>
   </div>
-  <div class="footer-bottom"><span>© 2026 CARLEIGHT</span><span>{lang === "zh" ? "新加坡" : "Singapore"}</span></div>
+  <div class="footer-bottom">
+    <span>© 2026 Carleight</span>
+    <span>{lang === "zh" ? "珠海 · 新加坡" : "Zhuhai · Singapore"}</span>
+  </div>
 </footer>
