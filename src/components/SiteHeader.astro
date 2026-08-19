@@ -18,9 +18,11 @@ const isFriends = pathname.startsWith(friends);
       <a class:list={{ active: isFriends }} href={friends}>Friends</a>
     </nav>
     <div class="account-area">
-      <a class="github-login" href="/api/auth/github" data-github-login>
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="7" r="4"></circle><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path></svg>
-        <span data-account-label>GitHub</span>
+      <a class="github-login" href={`/api/auth/github?return_to=${encodeURIComponent(pathname)}`} data-github-login data-login-label={lang === "zh" ? "登录" : "Login"} data-logout-label={lang === "zh" ? "退出登录" : "Logout"}>
+        <span class="github-avatar" data-account-avatar aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7" r="4"></circle><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path></svg>
+        </span>
+        <span data-account-label>{lang === "zh" ? "登录" : "Login"}</span>
       </a>
       <div class="language-switch" aria-label="Language">
         <a class:list={{ active: lang === "zh" }} data-language="zh" href={lang === "zh" ? pathname : alternatePath}>中</a>
@@ -38,13 +40,36 @@ const isFriends = pathname.startsWith(friends);
 <script>
   const accountLabel = document.querySelector<HTMLElement>("[data-account-label]");
   const loginLink = document.querySelector<HTMLAnchorElement>("[data-github-login]");
-  fetch("/api/auth/me")
-    .then(response => response.ok ? response.json() : null)
-    .then(user => {
-      if (!user?.login || !accountLabel || !loginLink) return;
+  const avatar = document.querySelector<HTMLElement>("[data-account-avatar]");
+  const returnTo = `${location.pathname}${location.search}${location.hash}`;
+
+  if (loginLink) loginLink.href = `/api/auth/github?return_to=${encodeURIComponent(returnTo)}`;
+
+  fetch("/api/auth/me", { credentials: "include" })
+    .then(response => response.ok ? response.json() : { authenticated: false })
+    .then(data => {
+      if (!loginLink || !accountLabel) return;
+      if (!data?.authenticated || !data?.user?.login) {
+        accountLabel.textContent = loginLink.dataset.loginLabel || "Login";
+        return;
+      }
+
+      const user = data.user;
       accountLabel.textContent = user.name || user.login;
-      loginLink.href = "/api/auth/logout";
-      loginLink.title = "Logout";
+      loginLink.href = `/api/auth/logout?return_to=${encodeURIComponent(returnTo)}`;
+      loginLink.title = loginLink.dataset.logoutLabel || "Logout";
+      loginLink.setAttribute("aria-label", `${user.name || user.login} — ${loginLink.dataset.logoutLabel || "Logout"}`);
+
+      if (avatar && user.avatar_url) {
+        avatar.innerHTML = "";
+        const image = document.createElement("img");
+        image.src = user.avatar_url;
+        image.alt = "";
+        image.loading = "lazy";
+        avatar.append(image);
+      }
     })
-    .catch(() => {});
+    .catch(() => {
+      if (accountLabel && loginLink) accountLabel.textContent = loginLink.dataset.loginLabel || "Login";
+    });
 </script>

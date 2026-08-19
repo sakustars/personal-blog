@@ -1,25 +1,96 @@
-function readCookie(request: Request, name: string) {
-  const cookie = request.headers.get("Cookie") || "";
-  return cookie.split(";").map(part => part.trim()).find(part => part.startsWith(`${name}=`))?.slice(name.length + 1);
+import {
+  authConfig,
+  clearStateCookie,
+  createSessionCookie,
+  getCookie,
+  json,
+  safeReturnTo,
+} from "./_utils";
+
+function parseState(value: string | null) {
+  if (!value) return null;
+  try {
+    const parsed = JSON.parse(atob(value)) as { nonce?: string; returnTo?: string };
+    if (!parsed.nonce) return null;
+    return { nonce: parsed.nonce, returnTo: safeReturnTo(parsed.returnTo || null) };
+  } catch {
+    return null;
+  }
 }
+
+async function fetchPrimaryEmail(accessToken: string) {
+  const response = await fetch("https://api.github.com/user/emails", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      Accept: "application/vnd.github+json",
+      "User-Agent": "carleight-blog",
+      "X-GitHub-Api-Version": "2022-11-28",
+    },
+  });
+
+  if (!response.ok) return null;
+  const emails = (await response.json()) as Array<{ email: string; primary: boolean; verified: boolean }>;
+  return emails.find(email => email.primary && email.verified)?.email || null;
+}
+
 export async function onRequest(context: any) {
   const request = context.request as Request;
   const url = new URL(request.url);
+  const error = url.searchParams.get("error");
+  if (error) return new Response(`GitHub OAuth failed: ${error}`, { status: 400 });
+
   const code = url.searchParams.get("code");
-  const state = url.searchParams.get("state");
-  const savedState = readCookie(request, "github_oauth_state");
-  const clientId = context.env.GITHUB_CLIENT_ID || context.env.PUBLIC_GITHUB_CLIENT_ID;
-  const clientSecret = context.env.GITHUB_CLIENT_SECRET;
-  if (!code || !state || !savedState || state !== savedState) return new Response("Invalid GitHub OAuth state", { status: 400 });
-  if (!clientId || !clientSecret) return new Response("Missing GitHub OAuth environment variables", { status: 500 });
-  const tokenResponse = await fetch("https://github.com/login/oauth/access_token", { method: "POST", headers: { Accept: "application/json", "Content-Type": "application/json" }, body: JSON.stringify({ client_id: clientId, client_secret: clientSecret, code, redirect_uri: `${url.origin}/api/auth/callback` }) });
-  const tokenData = (await tokenResponse.json()) as any;
-  if (!tokenData.access_token) return new Response("GitHub OAuth token exchange failed", { status: 400 });
-  const userResponse = await fetch("https://api.github.com/user", { headers: { Authorization: `Bearer ${tokenData.access_token}`, Accept: "application/vnd.github+json", "User-Agent": "carleight-blog" } });
-  const user = (await userResponse.json()) as any;
-  const session = btoa(JSON.stringify({ login: user.login, name: user.name, avatar_url: user.avatar_url, html_url: user.html_url }));
-  const headers = new Headers({ Location: "/" });
-  headers.append("Set-Cookie", "github_oauth_state=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0");
-  headers.append("Set-Cookie", `carleight_user=${session}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`);
+  const state = parseState(url.searchParams.get("state"));
+  const savedState = getCookie(request, "github_oauth_state");
+  const { clientId, clientSecret, sessionSecret } = authConfig(context.env);
+
+  if (!code || !state || !savedState || savedState !== state.nonce) {
+    return new Response("Invalid or expired GitHub login state. Please try logging in again.", { status: 400 });
+  }
+
+  if (!clientId || !clientSecret || !sessionSecret) {
+    return new Response("GitHub login is not configured: missing OAuth/session environment variables.", { status: 500 });
+  }
+
+  const tokenResponse = await fetch("https://github.com/login/oauth/access_token", {
+    method: "POST",
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
+    body: JSON.stringify({
+      client_id: clientId,
+      client_secret: clientSecret,
+      code,
+      redirect_uri: `${url.origin}/api/auth/callback`,
+    }),
+  });
+  const tokenData = (await tokenResponse.json()) as { access_token?: string; error?: string; error_description?: string };
+
+  if (!tokenResponse.ok || !tokenData.access_token) {
+    return json({ error: tokenData.error || "token_exchange_failed", message: tokenData.error_description || "GitHub OAuth token exchange failed" }, { status: 400 });
+  }
+
+  const userResponse = await fetch("https://api.github.com/user", {
+    headers: {
+      Authorization: `Bearer ${tokenData.access_token}`,
+      Accept: "application/vnd.github+json",
+      "User-Agent": "carleight-blog",
+      "X-GitHub-Api-Version": "2022-11-28",
+    },
+  });
+
+  if (!userResponse.ok) return new Response("Failed to load GitHub profile.", { status: 502 });
+
+  const user = (await userResponse.json()) as {
+    login: string;
+    name?: string | null;
+    avatar_url?: string | null;
+    html_url?: string | null;
+    email?: string | null;
+  };
+  const email = user.email || await fetchPrimaryEmail(tokenData.access_token);
+
+  const headers = new Headers({ Location: state.returnTo });
+  headers.append("Set-Cookie", clearStateCookie());
+  headers.append("Set-Cookie", await createSessionCookie({ ...user, email }, sessionSecret));
+
   return new Response(null, { status: 302, headers });
 }

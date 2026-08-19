@@ -142,9 +142,25 @@ img {
   line-height: 1;
   font-weight: 700;
 }
-.github-login svg {
+.github-avatar {
   width: 19px;
   height: 19px;
+  display: inline-grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.github-login svg,
+.github-avatar img {
+  width: 19px;
+  height: 19px;
+}
+.github-avatar img {
+  display: block;
+  object-fit: cover;
+}
+.github-login svg {
   stroke: currentColor;
   stroke-width: 1.8;
   stroke-linecap: round;
@@ -429,6 +445,12 @@ html[data-theme="dark"] .theme-icon-sun {
   line-height: 1.28;
   font-weight: 800;
   letter-spacing: -0.02em;
+}
+.capabilities-list .about-timeline-item {
+  align-items: baseline;
+}
+.capabilities-list .timeline-description {
+  margin: 0;
 }
 .timeline-title-link {
   display: inline-flex;

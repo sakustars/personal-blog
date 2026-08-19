@@ -6,9 +6,9 @@ const { lang } = Astro.props;
 const copy = lang === "zh"
   ? {
       intro: [
-        "UI/UX 设计、前端与 iOS 开发。",
-        "从需求、交互和视觉系统出发，把想法推进到可运行的产品。",
-        "也为 AI Agent 与研究软件建立可复现、可审计的交付链路。",
+        "我是 Carleight，解放之高三生也是前端设计师。",
+        "目前在 AdventureX、STCN 以及 Cladonia 工作，帮助 STCN 完成了品牌升级的工作，也在运营自己的设计工作室哦。",
+        "不断学习，无限进步。",
       ],
       journey: "代表项目",
       capabilities: "核心能力",
@@ -108,7 +108,7 @@ const siteHistory = lang === "zh"
 
   <section class="about-section" aria-labelledby="capabilities-title">
     <h2 id="capabilities-title">{copy.capabilities}</h2>
-    <div class="about-timeline">
+    <div class="about-timeline capabilities-list">
       {capabilities.map(item => (
         <article class="about-timeline-item">
           <h3>{item.title}</h3>
