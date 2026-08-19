@@ -3,9 +3,8 @@ import LoginPanel from "./LoginPanel.astro";
 
 interface Props {
   lang: "zh" | "en";
-  alternatePath: string;
 }
-const { lang, alternatePath } = Astro.props;
+const { lang } = Astro.props;
 const pathname = Astro.url.pathname;
 const home = lang === "zh" ? "/" : "/en/";
 const blog = lang === "zh" ? "/blog/" : "/en/blog/";
@@ -96,41 +95,6 @@ const isLoginPage = pathname === login;
           </a>
         </div>
       </div>
-      <div class="language-switch" aria-label="Language">
-        <a
-          class:list={{ active: lang === "zh" }}
-          data-language="zh"
-          href={lang === "zh" ? pathname : alternatePath}>中</a
-        >
-        <span>/</span>
-        <a
-          class:list={{ active: lang === "en" }}
-          data-language="en"
-          href={lang === "en" ? pathname : alternatePath}>EN</a
-        >
-      </div>
-      <button
-        class="theme-toggle"
-        type="button"
-        aria-label={lang === "zh" ? "切换明暗模式" : "Toggle color theme"}
-        aria-pressed="false"
-      >
-        <svg
-          class="theme-icon theme-icon-moon"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-          ><path d="M20 15.2A8.2 8.2 0 0 1 8.8 4a8.3 8.3 0 1 0 11.2 11.2Z"
-          ></path></svg
-        >
-        <svg
-          class="theme-icon theme-icon-sun"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-          ><circle cx="12" cy="12" r="3.8"></circle><path
-            d="M12 2v2.1M12 19.9V22M2 12h2.1M19.9 12H22M4.9 4.9l1.5 1.5M17.6 17.6l1.5 1.5M19.1 4.9l-1.5 1.5M6.4 17.6l-1.5 1.5"
-          ></path></svg
-        >
-      </button>
     </div>
   </div>
 </header>

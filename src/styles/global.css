@@ -1305,9 +1305,9 @@ html[lang="zh-CN"] .category-list h2 {
 }
 .footer-main {
   display: grid;
-  grid-template-columns: auto minmax(220px, 1fr) auto;
-  gap: clamp(38px, 5vw, 76px);
-  align-items: baseline;
+  grid-template-columns: auto minmax(180px, 1fr) auto auto;
+  gap: clamp(28px, 4vw, 60px);
+  align-items: center;
 }
 .footer-wordmark {
   color: var(--ink);
@@ -1334,6 +1334,17 @@ html[lang="zh-CN"] .category-list h2 {
   font-weight: 500;
 }
 .footer-links a:hover {
+  color: var(--ink);
+}
+.footer-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.footer-controls .language-switch {
+  color: var(--muted);
+}
+.footer-controls .theme-toggle {
   color: var(--ink);
 }
 .footer-bottom {
@@ -1790,9 +1801,6 @@ html[data-theme="dark"] .map-frame::before {
     right: -50px;
     width: min(250px, calc(100vw - 48px));
   }
-  .language-switch {
-    display: none;
-  }
   .home-hero,
   .topic-section,
   .writing-section,
@@ -2107,6 +2115,9 @@ html[data-theme="dark"] .map-frame::before {
     flex-wrap: wrap;
     gap: 12px 22px;
     margin-top: 8px;
+  }
+  .footer-controls {
+    margin-top: 4px;
   }
   .footer-bottom {
     margin-top: 22px;

@@ -21,9 +21,9 @@ const { title, description, lang, alternatePath } = Astro.props;
     </script>
   </head>
   <body>
-    <SiteHeader {lang} {alternatePath} />
+    <SiteHeader {lang} />
     <main><slot /></main>
-    <SiteFooter {lang} />
+    <SiteFooter {lang} {alternatePath} />
     <script>
       import panguBundle from "pangu/dist/browser/pangu.js";
       const candidates = [panguBundle, panguBundle?.default, panguBundle?.default?.default];
