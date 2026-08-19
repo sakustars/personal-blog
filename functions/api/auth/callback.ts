@@ -4,19 +4,8 @@ import {
   createSessionCookie,
   getCookie,
   json,
-  safeReturnTo,
+  parseState,
 } from "./_utils";
-
-function parseState(value: string | null) {
-  if (!value) return null;
-  try {
-    const parsed = JSON.parse(atob(value)) as { nonce?: string; returnTo?: string };
-    if (!parsed.nonce) return null;
-    return { nonce: parsed.nonce, returnTo: safeReturnTo(parsed.returnTo || null) };
-  } catch {
-    return null;
-  }
-}
 
 async function fetchPrimaryEmail(accessToken: string) {
   const response = await fetch("https://api.github.com/user/emails", {
@@ -90,7 +79,7 @@ export async function onRequest(context: any) {
 
   const headers = new Headers({ Location: state.returnTo });
   headers.append("Set-Cookie", clearStateCookie());
-  headers.append("Set-Cookie", await createSessionCookie({ ...user, email }, sessionSecret));
+  headers.append("Set-Cookie", await createSessionCookie({ ...user, email, provider: "github", subject: user.login }, sessionSecret));
 
   return new Response(null, { status: 302, headers });
 }

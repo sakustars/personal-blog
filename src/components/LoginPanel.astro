@@ -1,0 +1,75 @@
+---
+interface Props {
+  lang: "zh" | "en";
+  overlay?: boolean;
+}
+
+const { lang, overlay = false } = Astro.props;
+const copy =
+  lang === "zh"
+    ? {
+        title: "与你相连。",
+        intro: "登录 Carleight 的网站。",
+        google: "使用 Google 继续",
+        github: "使用 GitHub 继续",
+        apple: "使用 Apple 继续",
+        note: "登录即表示你同意本站的隐私说明。",
+        close: "关闭登录",
+      }
+    : {
+        title: "Stay connected.",
+        intro: "Sign in to Carleight's site.",
+        google: "Continue with Google",
+        github: "Continue with GitHub",
+        apple: "Continue with Apple",
+        note: "By continuing, you agree to this site's privacy notice.",
+        close: "Close sign-in",
+      };
+---
+
+<div class="login-panel" data-login-panel>
+  {
+    overlay ? (
+      <button
+        class="login-close"
+        type="button"
+        aria-label={copy.close}
+        data-login-close
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m6 6 12 12M18 6 6 18" />
+        </svg>
+      </button>
+    ) : (
+      <a
+        class="login-close"
+        href={lang === "zh" ? "/" : "/en/"}
+        aria-label={copy.close}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m6 6 12 12M18 6 6 18" />
+        </svg>
+      </a>
+    )
+  }
+  <h1 id={overlay ? "login-overlay-title" : undefined}>{copy.title}</h1>
+  <p class="login-intro">{copy.intro}</p>
+  <div class="login-providers">
+    <a href="/api/auth/google" data-provider="google"
+      ><span class="provider-mark">G</span><span>{copy.google}</span><span
+        aria-hidden="true">→</span
+      ></a
+    >
+    <a href="/api/auth/github" data-provider="github"
+      ><span class="provider-mark">GH</span><span>{copy.github}</span><span
+        aria-hidden="true">→</span
+      ></a
+    >
+    <a href="/api/auth/apple" data-provider="apple"
+      ><span class="provider-mark provider-apple">●</span><span
+        >{copy.apple}</span
+      ><span aria-hidden="true">→</span></a
+    >
+  </div>
+  <p class="login-note">{copy.note}</p>
+</div>

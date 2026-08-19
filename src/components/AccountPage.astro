@@ -1,0 +1,88 @@
+---
+interface Props { lang: "zh" | "en" }
+const { lang } = Astro.props;
+const copy = lang === "zh"
+  ? { loading: "正在读取账户…", about: "关于你", profile: "个人资料", name: "显示名称", email: "邮箱", bio: "个人简介", location: "所在地", website: "个人网站", provider: "登录方式", save: "保存更改", saving: "正在保存…", signout: "退出登录" }
+  : { loading: "Loading your account…", about: "About you", profile: "Profile", name: "Display name", email: "Email", bio: "Bio", location: "Location", website: "Website", provider: "Signed in with", save: "Save changes", saving: "Saving…", signout: "Sign out" };
+---
+<section class="account-page" data-profile-page data-lang={lang}>
+  <p class="account-loading" data-profile-loading>{copy.loading}</p>
+  <div data-profile-content hidden>
+    <h1 data-profile-greeting></h1>
+    <section class="account-about">
+      <h2>{copy.about}</h2>
+      <div class="account-identity">
+        <span class="profile-avatar" data-profile-avatar></span>
+        <div><strong data-profile-name></strong><span data-profile-email></span></div>
+      </div>
+    </section>
+    <form class="profile-form" data-profile-form>
+      <div class="profile-form-heading"><h2>{copy.profile}</h2><span data-profile-status aria-live="polite"></span></div>
+      <label><span>{copy.name}</span><input name="name" maxlength="60" autocomplete="name" /></label>
+      <label><span>{copy.email}</span><input name="email" disabled /></label>
+      <label class="profile-field-wide"><span>{copy.bio}</span><textarea name="bio" maxlength="180" rows="3"></textarea></label>
+      <label><span>{copy.location}</span><input name="location" maxlength="80" autocomplete="address-level2" /></label>
+      <label><span>{copy.website}</span><input name="website" maxlength="160" inputmode="url" autocomplete="url" /></label>
+      <div class="profile-provider"><span>{copy.provider}</span><strong data-profile-provider></strong></div>
+      <div class="profile-actions"><button type="submit" data-save-label={copy.save} data-saving-label={copy.saving}>{copy.save}</button><a href="/api/auth/logout">{copy.signout}</a></div>
+    </form>
+  </div>
+</section>
+<script>
+  const page = document.querySelector<HTMLElement>("[data-profile-page]");
+  const lang = page?.dataset.lang || "en";
+  const form = page?.querySelector<HTMLFormElement>("[data-profile-form]");
+  const setText = (selector: string, value: string) => { const node = page?.querySelector<HTMLElement>(selector); if (node) node.textContent = value; };
+  const setAvatar = (source: string | null, name: string) => {
+    const target = page?.querySelector<HTMLElement>("[data-profile-avatar]");
+    if (!target) return;
+    target.replaceChildren();
+    if (source) { const image = document.createElement("img"); image.src = source; image.alt = ""; target.append(image); }
+    else { const fallback = document.createElement("span"); fallback.textContent = name.slice(0, 1).toUpperCase(); target.append(fallback); }
+  };
+  const fill = (user: Record<string, string | null>) => {
+    const name = user.name || user.login || (lang === "zh" ? "用户" : "User");
+    setText("[data-profile-greeting]", lang === "zh" ? `👋 嗨，${name}。` : `👋 Hello, ${name}.`);
+    setText("[data-profile-name]", name);
+    setText("[data-profile-email]", user.email || `@${user.login}`);
+    const provider = user.provider || "";
+    setText("[data-profile-provider]", `${provider.slice(0, 1).toUpperCase()}${provider.slice(1)}`);
+    setAvatar(user.avatar_url || null, name);
+    if (form) {
+      (form.elements.namedItem("name") as HTMLInputElement).value = name;
+      (form.elements.namedItem("email") as HTMLInputElement).value = user.email || "";
+      (form.elements.namedItem("bio") as HTMLTextAreaElement).value = user.bio || "";
+      (form.elements.namedItem("location") as HTMLInputElement).value = user.location || "";
+      (form.elements.namedItem("website") as HTMLInputElement).value = user.website || "";
+    }
+  };
+  fetch("/api/auth/me", { credentials: "include" }).then(async response => {
+    const data = await response.json();
+    if (!data.authenticated) {
+      location.replace(`${lang === "zh" ? "/login/" : "/en/login/"}?return_to=${encodeURIComponent(location.pathname)}`);
+      return;
+    }
+    fill(data.user);
+    const loading = page?.querySelector<HTMLElement>("[data-profile-loading]");
+    const content = page?.querySelector<HTMLElement>("[data-profile-content]");
+    if (loading) loading.hidden = true;
+    if (content) content.hidden = false;
+  }).catch(() => setText("[data-profile-loading]", lang === "zh" ? "暂时无法读取账户。" : "Unable to load your account."));
+  form?.addEventListener("submit", async event => {
+    event.preventDefault();
+    const button = form.querySelector<HTMLButtonElement>("button[type=submit]");
+    const status = page?.querySelector<HTMLElement>("[data-profile-status]");
+    if (button) { button.disabled = true; button.textContent = button.dataset.savingLabel || "Saving…"; }
+    if (status) status.textContent = "";
+    const values = new FormData(form);
+    try {
+      const response = await fetch("/api/profile", { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: values.get("name"), bio: values.get("bio"), location: values.get("location"), website: values.get("website") }) });
+      const data = await response.json();
+      if (response.ok) { fill(data.profile); if (status) status.textContent = lang === "zh" ? "已保存" : "Saved"; }
+      else if (status) status.textContent = lang === "zh" ? "保存失败，请检查填写内容。" : "Could not save. Check your entries.";
+    } catch {
+      if (status) status.textContent = lang === "zh" ? "网络异常，请稍后再试。" : "Network error. Try again later.";
+    }
+    if (button) { button.disabled = false; button.textContent = button.dataset.saveLabel || "Save changes"; }
+  });
+</script>

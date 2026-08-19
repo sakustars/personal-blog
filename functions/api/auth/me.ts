@@ -18,11 +18,16 @@ export async function onRequest(context: any) {
   return json({
     authenticated: true,
     user: {
+      provider: session.provider,
+      subject: session.subject,
       login: session.login,
       name: session.name || session.login,
       avatar_url: session.avatar_url,
       html_url: session.html_url,
       email: session.email,
+      bio: session.bio,
+      location: session.location,
+      website: session.website,
     },
   });
 }

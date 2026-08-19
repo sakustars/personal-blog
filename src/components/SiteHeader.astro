@@ -1,75 +1,307 @@
 ---
-interface Props { lang: "zh" | "en"; alternatePath: string }
+import LoginPanel from "./LoginPanel.astro";
+
+interface Props {
+  lang: "zh" | "en";
+  alternatePath: string;
+}
 const { lang, alternatePath } = Astro.props;
 const pathname = Astro.url.pathname;
 const home = lang === "zh" ? "/" : "/en/";
 const blog = lang === "zh" ? "/blog/" : "/en/blog/";
 const friends = lang === "zh" ? "/friends/" : "/en/friends/";
+const login = lang === "zh" ? "/login/" : "/en/login/";
+const account = lang === "zh" ? "/account/" : "/en/account/";
 const isAbout = pathname === home;
-const isBlog = pathname.startsWith(blog) || pathname.includes("/article/") || pathname.includes("/category/");
+const isBlog =
+  pathname.startsWith(blog) ||
+  pathname.includes("/article/") ||
+  pathname.includes("/category/");
 const isFriends = pathname.startsWith(friends);
+const isLoginPage = pathname === login;
 ---
+
 <header class="site-header">
   <div class="header-inner">
-    <a class="wordmark" href={home}>CARLEIGHT</a>
+    <a class="wordmark" href={home}>Carleight</a>
     <nav aria-label={lang === "zh" ? "主导航" : "Main navigation"}>
-      <a class:list={{ active: isAbout }} href={home}>About</a>
-      <a class:list={{ active: isBlog }} href={blog}>Blog</a>
-      <a class:list={{ active: isFriends }} href={friends}>Friends</a>
+      <a class:list={{ active: isAbout }} href={home}
+        >{lang === "zh" ? "关于" : "About"}</a
+      >
+      <a class:list={{ active: isBlog }} href={blog}
+        >{lang === "zh" ? "博客" : "Blog"}</a
+      >
+      <a class:list={{ active: isFriends }} href={friends}
+        >{lang === "zh" ? "友人" : "Friends"}</a
+      >
     </nav>
     <div class="account-area">
-      <a class="github-login" href={`/api/auth/github?return_to=${encodeURIComponent(pathname)}`} data-github-login data-login-label={lang === "zh" ? "登录" : "Login"} data-logout-label={lang === "zh" ? "退出登录" : "Logout"}>
-        <span class="github-avatar" data-account-avatar aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7" r="4"></circle><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path></svg>
-        </span>
-        <span data-account-label>{lang === "zh" ? "登录" : "Login"}</span>
-      </a>
-      <div class="language-switch" aria-label="Language">
-        <a class:list={{ active: lang === "zh" }} data-language="zh" href={lang === "zh" ? pathname : alternatePath}>中</a>
-        <span>/</span>
-        <a class:list={{ active: lang === "en" }} data-language="en" href={lang === "en" ? pathname : alternatePath}>EN</a>
+      <div class="account-control" data-account-root data-lang={lang}>
+        <a
+          class="account-login"
+          href={`${login}?return_to=${encodeURIComponent(pathname)}`}
+          data-account-login
+        >
+          <span
+            class="account-avatar account-avatar-placeholder"
+            aria-hidden="true"
+          >
+            <svg viewBox="0 0 24 24" fill="none"
+              ><circle cx="12" cy="7" r="4"></circle><path
+                d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path></svg
+            >
+          </span>
+          <span>{lang === "zh" ? "登录" : "Login"}</span>
+        </a>
+        <button
+          class="account-trigger"
+          type="button"
+          aria-expanded="false"
+          aria-haspopup="menu"
+          data-account-trigger
+          hidden
+        >
+          <span class="account-avatar" data-account-avatar></span>
+          <span data-account-name></span>
+          <svg class="account-chevron" viewBox="0 0 16 16" aria-hidden="true"
+            ><path d="m4 6 4 4 4-4"></path></svg
+          >
+        </button>
+        <div class="account-menu" role="menu" data-account-menu hidden>
+          <div class="account-menu-greeting">
+            <span class="account-avatar account-avatar-large" data-menu-avatar
+            ></span>
+            <div>
+              <strong data-account-greeting></strong><span data-account-email
+              ></span>
+            </div>
+          </div>
+          <a role="menuitem" href={account}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"
+              ><circle cx="10" cy="7" r="3.5"></circle><path
+                d="M3.5 20c0-3.8 2.9-6.5 6.5-6.5 1.5 0 2.8.4 3.9 1.2M18 14v2M18 20v2M14 18h2M20 18h2"
+              ></path></svg
+            >
+            {lang === "zh" ? "用户中心" : "Account"}
+          </a>
+          <a
+            class="account-logout"
+            role="menuitem"
+            href={`/api/auth/logout?return_to=${encodeURIComponent(home)}`}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true"
+              ><path d="M10 4H4v16h6M14 8l4 4-4 4M8 12h10"></path></svg
+            >
+            {lang === "zh" ? "退出登录" : "Sign out"}
+          </a>
+        </div>
       </div>
-      <button class="theme-toggle" type="button" aria-label={lang === "zh" ? "切换明暗模式" : "Toggle color theme"} aria-pressed="false">
-        <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.2A8.2 8.2 0 0 1 8.8 4a8.3 8.3 0 1 0 11.2 11.2Z"></path></svg>
-        <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.8"></circle><path d="M12 2v2.1M12 19.9V22M2 12h2.1M19.9 12H22M4.9 4.9l1.5 1.5M17.6 17.6l1.5 1.5M19.1 4.9l-1.5 1.5M6.4 17.6l-1.5 1.5"></path></svg>
+      <div class="language-switch" aria-label="Language">
+        <a
+          class:list={{ active: lang === "zh" }}
+          data-language="zh"
+          href={lang === "zh" ? pathname : alternatePath}>中</a
+        >
+        <span>/</span>
+        <a
+          class:list={{ active: lang === "en" }}
+          data-language="en"
+          href={lang === "en" ? pathname : alternatePath}>EN</a
+        >
+      </div>
+      <button
+        class="theme-toggle"
+        type="button"
+        aria-label={lang === "zh" ? "切换明暗模式" : "Toggle color theme"}
+        aria-pressed="false"
+      >
+        <svg
+          class="theme-icon theme-icon-moon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          ><path d="M20 15.2A8.2 8.2 0 0 1 8.8 4a8.3 8.3 0 1 0 11.2 11.2Z"
+          ></path></svg
+        >
+        <svg
+          class="theme-icon theme-icon-sun"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          ><circle cx="12" cy="12" r="3.8"></circle><path
+            d="M12 2v2.1M12 19.9V22M2 12h2.1M19.9 12H22M4.9 4.9l1.5 1.5M17.6 17.6l1.5 1.5M19.1 4.9l-1.5 1.5M6.4 17.6l-1.5 1.5"
+          ></path></svg
+        >
       </button>
     </div>
   </div>
 </header>
 
-<script>
-  const accountLabel = document.querySelector<HTMLElement>("[data-account-label]");
-  const loginLink = document.querySelector<HTMLAnchorElement>("[data-github-login]");
-  const avatar = document.querySelector<HTMLElement>("[data-account-avatar]");
-  const returnTo = `${location.pathname}${location.search}${location.hash}`;
+{
+  !isLoginPage && (
+    <section
+      class="login-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="login-overlay-title"
+      aria-hidden="true"
+      data-login-overlay
+      hidden
+    >
+      <LoginPanel {lang} overlay />
+    </section>
+  )
+}
 
-  if (loginLink) loginLink.href = `/api/auth/github?return_to=${encodeURIComponent(returnTo)}`;
+<script>
+  const root = document.querySelector<HTMLElement>("[data-account-root]");
+  const loginLink = root?.querySelector<HTMLAnchorElement>(
+    "[data-account-login]"
+  );
+  const trigger = root?.querySelector<HTMLButtonElement>(
+    "[data-account-trigger]"
+  );
+  const menu = root?.querySelector<HTMLElement>("[data-account-menu]");
+  const loginOverlay = document.querySelector<HTMLElement>(
+    "[data-login-overlay]"
+  );
+  const loginPanel =
+    loginOverlay?.querySelector<HTMLElement>("[data-login-panel]");
+  const loginClose =
+    loginOverlay?.querySelector<HTMLButtonElement>("[data-login-close]");
+  const lang = root?.dataset.lang || "en";
+  let previouslyFocused: HTMLElement | null = null;
+
+  const overlayFocusables = () =>
+    Array.from(
+      loginOverlay?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      ) || []
+    ).filter(element => !element.hidden);
+
+  const syncProviderLinks = () => {
+    if (!loginOverlay) return;
+    const returnTo = `${location.pathname}${location.search}`;
+    loginOverlay
+      .querySelectorAll<HTMLAnchorElement>("[data-provider]")
+      .forEach(link => {
+        link.href = `/api/auth/${link.dataset.provider}?return_to=${encodeURIComponent(returnTo)}`;
+      });
+  };
+
+  const closeLogin = () => {
+    if (!loginOverlay || loginOverlay.hidden) return;
+    loginOverlay.hidden = true;
+    loginOverlay.setAttribute("aria-hidden", "true");
+    document.documentElement.classList.remove("login-overlay-open");
+    previouslyFocused?.focus();
+  };
+
+  const openLogin = () => {
+    if (!loginOverlay) return;
+    previouslyFocused =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+    syncProviderLinks();
+    loginOverlay.hidden = false;
+    loginOverlay.setAttribute("aria-hidden", "false");
+    document.documentElement.classList.add("login-overlay-open");
+    requestAnimationFrame(() => loginClose?.focus());
+  };
+  const closeMenu = () => {
+    if (!trigger || !menu) return;
+    trigger.setAttribute("aria-expanded", "false");
+    menu.hidden = true;
+  };
+  const setAvatar = (
+    target: Element | null,
+    source: string | null,
+    name: string
+  ) => {
+    if (!target) return;
+    target.replaceChildren();
+    if (source) {
+      const image = document.createElement("img");
+      image.src = source;
+      image.alt = "";
+      image.loading = "lazy";
+      target.append(image);
+    } else {
+      const fallback = document.createElement("span");
+      fallback.textContent = name.slice(0, 1).toUpperCase();
+      target.append(fallback);
+    }
+  };
+  trigger?.addEventListener("click", () => {
+    if (!menu) return;
+    const opening = menu.hidden;
+    menu.hidden = !opening;
+    trigger.setAttribute("aria-expanded", String(opening));
+  });
+  loginLink?.addEventListener("click", event => {
+    if (!loginOverlay) return;
+    event.preventDefault();
+    openLogin();
+  });
+  loginClose?.addEventListener("click", closeLogin);
+  loginOverlay?.addEventListener("click", event => {
+    if (event.target === loginOverlay) closeLogin();
+  });
+  loginPanel?.addEventListener("click", event => event.stopPropagation());
+  loginOverlay?.addEventListener("keydown", event => {
+    if (event.key !== "Tab") return;
+    const focusable = overlayFocusables();
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+  document.addEventListener("click", event => {
+    if (root && !root.contains(event.target as Node)) closeMenu();
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      closeMenu();
+      closeLogin();
+    }
+  });
 
   fetch("/api/auth/me", { credentials: "include" })
-    .then(response => response.ok ? response.json() : { authenticated: false })
+    .then(response =>
+      response.ok ? response.json() : { authenticated: false }
+    )
     .then(data => {
-      if (!loginLink || !accountLabel) return;
-      if (!data?.authenticated || !data?.user?.login) {
-        accountLabel.textContent = loginLink.dataset.loginLabel || "Login";
-        return;
-      }
-
+      if (!data?.authenticated || !data?.user || !root || !trigger) return;
       const user = data.user;
-      accountLabel.textContent = user.name || user.login;
-      loginLink.href = `/api/auth/logout?return_to=${encodeURIComponent(returnTo)}`;
-      loginLink.title = loginLink.dataset.logoutLabel || "Logout";
-      loginLink.setAttribute("aria-label", `${user.name || user.login} — ${loginLink.dataset.logoutLabel || "Logout"}`);
-
-      if (avatar && user.avatar_url) {
-        avatar.innerHTML = "";
-        const image = document.createElement("img");
-        image.src = user.avatar_url;
-        image.alt = "";
-        image.loading = "lazy";
-        avatar.append(image);
-      }
+      const name = user.name || user.login || (lang === "zh" ? "用户" : "User");
+      if (loginLink) loginLink.hidden = true;
+      closeLogin();
+      trigger.hidden = false;
+      const nameNode = root.querySelector<HTMLElement>("[data-account-name]");
+      const greeting = root.querySelector<HTMLElement>(
+        "[data-account-greeting]"
+      );
+      const email = root.querySelector<HTMLElement>("[data-account-email]");
+      if (nameNode) nameNode.textContent = name;
+      if (greeting)
+        greeting.textContent =
+          lang === "zh" ? `👋 嗨，${name}。` : `👋 Hello, ${name}.`;
+      if (email) email.textContent = user.email || `@${user.login}`;
+      setAvatar(
+        root.querySelector("[data-account-avatar]"),
+        user.avatar_url,
+        name
+      );
+      setAvatar(
+        root.querySelector("[data-menu-avatar]"),
+        user.avatar_url,
+        name
+      );
     })
-    .catch(() => {
-      if (accountLabel && loginLink) accountLabel.textContent = loginLink.dataset.loginLabel || "Login";
-    });
+    .catch(() => {});
 </script>

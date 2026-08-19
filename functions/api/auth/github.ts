@@ -1,4 +1,4 @@
-import { authConfig, createStateCookie, safeReturnTo } from "./_utils";
+import { authConfig, createStateCookie, encodeState, safeReturnTo } from "./_utils";
 
 export async function onRequest(context: any) {
   const request = context.request as Request;
@@ -11,7 +11,7 @@ export async function onRequest(context: any) {
 
   const returnTo = safeReturnTo(url.searchParams.get("return_to") || request.headers.get("Referer"));
   const nonce = crypto.randomUUID();
-  const state = btoa(JSON.stringify({ nonce, returnTo }));
+  const state = encodeState({ nonce, returnTo });
   const target = new URL("https://github.com/login/oauth/authorize");
   target.searchParams.set("client_id", clientId);
   target.searchParams.set("redirect_uri", `${url.origin}/api/auth/callback`);

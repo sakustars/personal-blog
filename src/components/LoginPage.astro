@@ -1,0 +1,28 @@
+---
+import LoginPanel from "./LoginPanel.astro";
+
+interface Props {
+  lang: "zh" | "en";
+}
+
+const { lang } = Astro.props;
+---
+
+<section class="login-page" data-login-page>
+  <LoginPanel {lang} />
+</section>
+<script>
+  const params = new URLSearchParams(location.search);
+  const requested = params.get("return_to");
+  const returnTo =
+    requested?.startsWith("/") && !requested.startsWith("//")
+      ? requested
+      : location.pathname.startsWith("/en/")
+        ? "/en/account/"
+        : "/account/";
+  document
+    .querySelectorAll<HTMLAnchorElement>("[data-provider]")
+    .forEach(link => {
+      link.href = `/api/auth/${link.dataset.provider}?return_to=${encodeURIComponent(returnTo)}`;
+    });
+</script>
