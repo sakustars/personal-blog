@@ -1,9 +1,7 @@
 ---
-import { getCollection } from "astro:content";
 import SiteLayout from "../../layouts/SiteLayout.astro";
-import HomePage from "../../components/HomePage.astro";
-const posts = (await getCollection("posts", ({ data }) => data.lang === "en" && !data.draft)).sort((a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf());
+import AboutPage from "../../components/AboutPage.astro";
 ---
-<SiteLayout title="CARLEIGHT — Writing" description="Personal writing on science, technology, reading, and everyday life." lang="en" alternatePath="/">
-  <HomePage lang="en" {posts} />
+<SiteLayout title="CARLEIGHT — About" description="About Carleight: science, technology, reading, and everyday life." lang="en" alternatePath="/">
+  <AboutPage lang="en" />
 </SiteLayout>

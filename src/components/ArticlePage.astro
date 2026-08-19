@@ -18,7 +18,7 @@ const readingTime = getReadingTime(post.body ?? "", lang);
 ---
 <article class="article-page">
   <header class="article-header">
-    <a class="back-link" href={lang === "zh" ? "/" : "/en/"}>← {lang === "zh" ? "全部文章" : "All writing"}</a>
+    <a class="back-link" href={lang === "zh" ? "/blog/" : "/en/blog/"}>← {lang === "zh" ? "全部文章" : "All writing"}</a>
     <div class="article-heading-grid">
       <div class="article-meta-column"><span>{category}</span><span>{date}</span><span>{readingTime}</span><small>0{index + 1} / 03</small></div>
       <div><h1>{post.data.title}</h1><p>{post.data.deck}</p></div>

@@ -1,0 +1,9 @@
+---
+import { getCollection } from "astro:content";
+import SiteLayout from "../../../layouts/SiteLayout.astro";
+import HomePage from "../../../components/HomePage.astro";
+const posts = (await getCollection("posts", ({ data }) => data.lang === "en" && !data.draft)).sort((a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf());
+---
+<SiteLayout title="CARLEIGHT — Blog" description="Personal writing on science, technology, reading, and everyday life." lang="en" alternatePath="/blog/">
+  <HomePage lang="en" {posts} />
+</SiteLayout>

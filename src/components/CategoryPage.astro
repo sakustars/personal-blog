@@ -10,7 +10,7 @@ interface Props {
 }
 const { lang, category, posts } = Astro.props;
 const copy = category[lang];
-const home = lang === "zh" ? "/" : "/en/";
+const home = lang === "zh" ? "/blog/" : "/en/blog/";
 const categoryBase = lang === "zh" ? "/category" : "/en/category";
 const articleUrl = (post: CollectionEntry<"posts">) =>
   lang === "zh"
